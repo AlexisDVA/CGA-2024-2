@@ -143,6 +143,9 @@ float rotHelHelY = 0.0;
 int stateDoor = 0;
 float dorRotCount = 0.0;
 
+float avance = 0.1f;
+float giroEclipse = 0.5f;
+
 double deltaTime;
 double currTime, lastTime;
 
@@ -435,7 +438,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	glGenTextures(1, &textureLandingPadID); // Creando el id de la textura del landingpad
 	glBindTexture(GL_TEXTURE_2D, textureLandingPadID); // Se enlaza la textura
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Wrapping en el eje u
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Wrapping en el eje v
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // Wrapping en el eje v
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Filtering de minimización
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Filtering de maximimizacion
 	if(textureLandingPad.getData()){
@@ -447,6 +450,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	else 
 		std::cout << "Fallo la carga de textura" << std::endl;
 	textureLandingPad.freeImage(); // Liberamos memoria
+
 }
 
 void destroy() {
@@ -993,6 +997,71 @@ void applicationLoop() {
 		glCullFace(oldCullFaceMode);
 		glDepthFunc(oldDepthFuncMode);
 
+		/****************Maquinas de estado de eclipse*************/
+
+		switch(state){
+			case 0:
+				if(numberAdvance == 0)
+					maxAdvance = 65.0;
+				if(numberAdvance == 1)
+					maxAdvance = 49.0;
+				if(numberAdvance == 2)
+					maxAdvance = 44.5;
+				if(numberAdvance == 3)
+					maxAdvance = 49.0;
+				if(numberAdvance == 4)
+					maxAdvance = 44.5;
+				state = 1;
+				break;
+			case 1:
+				modelMatrixEclipse = glm::translate(modelMatrixEclipse, glm::vec3(0.0f, 0.0f, avance));
+				advanceCount += avance;
+				rotWheelsX += 0.05f;
+				rotWheelsY -= 0.02f;
+				if(rotWheelsY < 0.0f){
+					rotWheelsY = 0.0f;
+				}
+				if(advanceCount > maxAdvance){
+					advanceCount = 0;
+					numberAdvance++;
+					state = 2;
+				}
+				break;
+			case 2:
+				modelMatrixEclipse = glm::translate(modelMatrixEclipse, glm::vec3(0.0f, 0.0f, 0.025f));
+				modelMatrixEclipse = glm::rotate(modelMatrixEclipse, glm::radians(giroEclipse), glm::vec3(0.0f,1.0f,0.0f));
+				rotCount += giroEclipse;
+				rotWheelsX += 0.005f;
+				rotWheelsY += 0.02f;
+				if(rotWheelsY >= 0.25f){
+					rotWheelsY = 0.25f;
+				}
+				if(rotCount >= 90.0f){
+					state = 0;
+					rotCount = 0;
+					if(numberAdvance > 4)
+						numberAdvance = 1;
+				}
+				break;
+			default:
+				break;
+		}
+
+		/*********Maquina de estados de lambo********/
+		switch (stateDoor){
+			case 0:
+				dorRotCount += 0.6f;
+				if(dorRotCount > 75.0f)
+					stateDoor = 1;
+				break;
+			case 1:
+				dorRotCount -= 0.6f;
+				if(dorRotCount < 0.0f)
+					stateDoor = 0;
+				break;
+			default:
+				break;
+		}
 		// Constantes de animaciones
 		rotHelHelY += 0.5;
 

@@ -43,6 +43,7 @@ public:
 	void updateCamera();
 	void moveFrontCamera(bool dir, float dt);
 	void moveRightCamera(bool dir, float dt);
+  void setFront(const glm::vec3& front);
 };
 
 #endif // FIRSTPERSONCAMERA_H

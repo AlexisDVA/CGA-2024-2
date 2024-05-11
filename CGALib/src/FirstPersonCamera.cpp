@@ -54,3 +54,7 @@ void FirstPersonCamera::moveRightCamera(bool dir, float dt) {
 		this->position -= (float)dt * speed * this->right;
 	updateCamera();
 }
+void FirstPersonCamera::setFront(const glm::vec3& front) {
+    this->front = front;
+    updateCamera();
+}

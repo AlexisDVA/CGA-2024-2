@@ -21,6 +21,7 @@
 #include "Headers/Cylinder.h"
 #include "Headers/Box.h"
 #include "Headers/FirstPersonCamera.h"
+#include "Headers/ThirdPersonCamera.h"
 
 //GLM include
 #define GLM_FORCE_RADIANS
@@ -53,7 +54,10 @@ Shader shaderMulLighting;
 //Shader para el terreno
 Shader shaderTerrain;
 
-std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
+std::shared_ptr<FirstPersonCamera> cameraPrimeraPersona(new FirstPersonCamera());
+std::shared_ptr<Camera> camera(new ThirdPersonCamera()); //Instancia de la camara en 3ra persona
+
+float distanceFromPlayer = 7.5;
 
 Sphere skyboxSphere(20, 20);
 Box boxCesped;
@@ -107,6 +111,9 @@ Model cowboyModelAnimate;
 Model guardianModelAnimate;
 // Cybog
 Model cyborgModelAnimate;
+//Chaval
+Model chavalModelAnimate;
+
 // Terrain model instance
 Terrain terrain(-1, -1, 200, 8, "../Textures/heightmap.png");
 
@@ -145,12 +152,16 @@ glm::mat4 modelMatrixMayow = glm::mat4(1.0f);
 glm::mat4 modelMatrixCowboy = glm::mat4(1.0f);
 glm::mat4 modelMatrixGuardian = glm::mat4(1.0f);
 glm::mat4 modelMatrixCyborg = glm::mat4(1.0f);
+glm::mat4 modelMatrixChaval = glm::mat4(1.0f);
 
 int animationMayowIndex = 1;
+int animationChavalIndex = 1;
 float rotDartHead = 0.0, rotDartLeftArm = 0.0, rotDartLeftHand = 0.0, rotDartRightArm = 0.0, rotDartRightHand = 0.0, rotDartLeftLeg = 0.0, rotDartRightLeg = 0.0;
 float rotBuzzHead = 0.0, rotBuzzLeftarm = 0.0, rotBuzzLeftForeArm = 0.0, rotBuzzLeftHand = 0.0;
 int modelSelected = 0;
 bool enableCountSelected = true;
+
+bool isFirstPersonCamera = false;  // Variable para controlar el tipo de cámara activa
 
 // Variables to animations keyframes
 bool saveFrame = false, availableSave = true;
@@ -224,6 +235,7 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action,
 		int mode);
 void mouseCallback(GLFWwindow *window, double xpos, double ypos);
 void mouseButtonCallback(GLFWwindow *window, int button, int state, int mod);
+void scrollCallback(GLFWwindow *window, double xoffset, double yoffset);
 void init(int width, int height, std::string strTitle, bool bFullScreen);
 void destroy();
 bool processInput(bool continueApplication = true);
@@ -265,6 +277,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	glfwSetKeyCallback(window, keyCallback);
 	glfwSetCursorPosCallback(window, mouseCallback);
 	glfwSetMouseButtonCallback(window, mouseButtonCallback);
+	glfwSetScrollCallback(window, scrollCallback);
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 	// Init glew
@@ -363,7 +376,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelDartLegoRightLeg.loadModel("../models/LegoDart/LeoDart_right_leg.obj");
 	modelDartLegoRightLeg.setShader(&shaderMulLighting);
 
-	
+	/*
 	// Buzz
 	modelBuzzTorso.loadModel("../models/buzz/buzzlightyTorso.obj");
 	modelBuzzTorso.setShader(&shaderMulLighting);
@@ -375,6 +388,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelBuzzLeftForeArm.setShader(&shaderMulLighting);
 	modelBuzzLeftHand.loadModel("../models/buzz/buzzlightyLeftHand.obj");
 	modelBuzzLeftHand.setShader(&shaderMulLighting);
+*/
 
 	//Lamps models
 	modelLamp1.loadModel("../models/Street-Lamp-Black/objLamp.obj");
@@ -400,12 +414,22 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	cyborgModelAnimate.loadModel("../models/cyborg/cyborg.fbx");
 	cyborgModelAnimate.setShader(&shaderMulLighting);
 
+	//Chaval
+	chavalModelAnimate.loadModel("../models/Chaval/Chaval_1.fbx");
+	chavalModelAnimate.setShader(&shaderMulLighting);
+
 	// Terreno
 	terrain.init();
 	terrain.setShader(&shaderTerrain);
 
-	camera->setPosition(glm::vec3(0.0, 3.0, 4.0));
-	
+	//camera->setPosition(glm::vec3(0.0, 3.0, 4.0));
+	camera->setDistanceFromTarget(distanceFromPlayer);
+	camera->setSensitivity(1.2);
+
+	//camera->setPosition(glm::vec3(0.0, 3.0, 4.0));
+	cameraPrimeraPersona->setDistanceFromTarget(distanceFromPlayer);
+	cameraPrimeraPersona->setSensitivity(1.2);
+
 	// Carga de texturas para el skybox
 	Texture skyboxTexture = Texture("");
 	glGenTextures(1, &skyboxTextureID);
@@ -700,6 +724,7 @@ void destroy() {
 	cowboyModelAnimate.destroy();
 	guardianModelAnimate.destroy();
 	cyborgModelAnimate.destroy();
+	chavalModelAnimate.destroy();
 
 	// Terrains objects Delete
 	terrain.destroy();
@@ -762,12 +787,44 @@ void mouseButtonCallback(GLFWwindow *window, int button, int state, int mod) {
 	}
 }
 
+void scrollCallback(GLFWwindow *window, double xoffser, double yoffset){
+	distanceFromPlayer -= yoffset;
+	camera->setDistanceFromTarget(distanceFromPlayer);
+	cameraPrimeraPersona->setDistanceFromTarget(distanceFromPlayer);
+}
+
 bool processInput(bool continueApplication) {
 	if (exitApp || glfwWindowShouldClose(window) != 0) {
 		return false;
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+		if (isFirstPersonCamera) {
+			cameraPrimeraPersona->mouseMoveCamera(offsetX, 0.0, deltaTime);
+		} else {
+			camera->mouseMoveCamera(offsetX, 0.0, deltaTime);
+		}
+	}
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+		if (isFirstPersonCamera) {
+			cameraPrimeraPersona->mouseMoveCamera(0.0, offsetY, deltaTime);
+		} else {
+			camera->mouseMoveCamera(0.0, offsetY, deltaTime);
+		}
+	}
+	//Alternar camara
+	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
+		isFirstPersonCamera = !isFirstPersonCamera;
+
+		if (isFirstPersonCamera) {
+			camera = cameraPrimeraPersona;
+		} else {
+			camera = std::make_shared<ThirdPersonCamera>(*dynamic_cast<ThirdPersonCamera*>(camera.get()));
+		}
+	}
+
+
+	/*if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->moveFrontCamera(true, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		camera->moveFrontCamera(false, deltaTime);
@@ -776,7 +833,7 @@ bool processInput(bool continueApplication) {
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera->moveRightCamera(true, deltaTime);
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-		camera->mouseMoveCamera(offsetX, offsetY, deltaTime);
+		camera->mouseMoveCamera(offsetX, offsetY, deltaTime);*/
 	offsetX = 0;
 	offsetY = 0;
 
@@ -784,7 +841,7 @@ bool processInput(bool continueApplication) {
 	if (enableCountSelected && glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS){
 		enableCountSelected = false;
 		modelSelected++;
-		if(modelSelected > 4)
+		if(modelSelected > 5)
 			modelSelected = 0;
 		if(modelSelected == 1)
 			fileName = "../animaciones/animation_dart_joints.txt";
@@ -929,12 +986,39 @@ bool processInput(bool continueApplication) {
 		animationMayowIndex = 0;
 	}
 
+	//Movimiento de chaval
+	if(modelSelected == 0 && glfwGetKey (window, GLFW_KEY_UP) == GLFW_PRESS){
+		modelMatrixChaval = glm::translate (modelMatrixChaval, glm::vec3 (0.0f, 0.0f, 0.04f));
+		chavalModelAnimate.setAnimationIndex (2);
+		
+	} else if (modelSelected == 0 && glfwGetKey (window, GLFW_KEY_DOWN) == GLFW_PRESS){
+		modelMatrixChaval = glm::translate (modelMatrixChaval, glm::vec3 (0.0f, 0.0f, -0.04f));
+		chavalModelAnimate.setAnimationIndex (2);
+		
+	}
+	if(modelSelected == 0 && glfwGetKey (window, GLFW_KEY_RIGHT) == GLFW_PRESS){
+		modelMatrixChaval = glm::rotate(modelMatrixChaval, -0.02f, glm::vec3(0, 1, 0));
+		modelMatrixChaval = glm::translate (modelMatrixChaval, glm::vec3 (-0.02f, 0.0f, 0.0f));
+		chavalModelAnimate.setAnimationIndex (2);
+		
+	} else if (modelSelected == 0 && glfwGetKey (window, GLFW_KEY_LEFT) == GLFW_PRESS){
+		modelMatrixChaval = glm::rotate(modelMatrixChaval, 0.02f, glm::vec3(0, 1, 0));
+		modelMatrixChaval = glm::translate (modelMatrixChaval, glm::vec3 (0.02f, 0.0f, 0.0f));
+		chavalModelAnimate.setAnimationIndex (2);
+		
+	}
+
+
 	glfwPollEvents();
 	return continueApplication;
 }
 
 void applicationLoop() {
 	bool psi = true;
+	glm::mat4 view;
+	glm::vec3 axisPlayer;
+	glm::vec3 playerPosition;
+	float anglePlayer;
 
 	modelMatrixEclipse = glm::translate(modelMatrixEclipse, glm::vec3(27.5, 0, 30.0));
 	modelMatrixEclipse = glm::rotate(modelMatrixEclipse, glm::radians(180.0f), glm::vec3(0, 1, 0));
@@ -968,6 +1052,8 @@ void applicationLoop() {
 
 	modelMatrixCyborg = glm::translate(modelMatrixCyborg, glm::vec3(5.0f, 0.05, 0.0f));
 
+	modelMatrixChaval = glm::translate(modelMatrixChaval, glm::vec3(-2.5f, 0.07f, -1.7f));
+
 	// Variables to interpolation key frames
 	fileName = "../animaciones/animation_dart_joints.txt";
 	keyFramesDartJoints = getKeyRotFrames(fileName);
@@ -997,12 +1083,86 @@ void applicationLoop() {
 
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f),
 				(float) screenWidth / (float) screenHeight, 0.01f, 100.0f);
+		
+
+		if (isFirstPersonCamera) {
+			// Configuración para la cámara en primera persona
+			glm::vec3 playerPosition = modelMatrixChaval[3];
+			cameraPrimeraPersona->setPosition(playerPosition);
+			glm::vec3 front = glm::normalize(glm::vec3(modelMatrixChaval[2]));
+			cameraPrimeraPersona->setFront(front);
+			cameraPrimeraPersona->mouseMoveCamera(offsetX, offsetY, deltaTime);
+
+			cameraPrimeraPersona->updateCamera();
+			view = cameraPrimeraPersona->getViewMatrix();
+		} else {
+			// Configuración para la cámara en tercera persona
+			if (modelSelected == 1) {
+				playerPosition = modelMatrixDart[3];
+				axisPlayer = glm::axis(glm::quat_cast(modelMatrixDart));
+				anglePlayer = glm::angle(glm::quat_cast(modelMatrixDart));
+			} else if (modelSelected == 0) {
+				playerPosition = modelMatrixChaval[3];
+				axisPlayer = glm::axis(glm::quat_cast(modelMatrixChaval));
+				anglePlayer = glm::angle(glm::quat_cast(modelMatrixChaval));
+			} else {
+				playerPosition = modelMatrixMayow[3];
+				axisPlayer = glm::axis(glm::quat_cast(modelMatrixMayow));
+				anglePlayer = glm::angle(glm::quat_cast(modelMatrixMayow));
+			}
+			
+			if (std::isnan(anglePlayer))
+				anglePlayer = 0.0;
+			if (axisPlayer.y < 0)
+				anglePlayer = -anglePlayer;
+			if (modelSelected == 1)
+				anglePlayer -= glm::radians(90.0f);
+
+			camera->setCameraTarget(playerPosition);
+			camera->setAngleTarget(anglePlayer);
+			camera->updateCamera();
+			view = camera->getViewMatrix();
+		}
+
+		// Settea la matriz de vista y projection al shader con solo color
+		shader.setMatrix4("projection", 1, false, glm::value_ptr(projection));
+		shader.setMatrix4("view", 1, false, glm::value_ptr(view));
+
+		/*
+		if(modelSelected == 1){
+			playerPosition = modelMatrixDart[3];
+			axisPlayer = glm::axis(glm::quat_cast(modelMatrixDart));
+			anglePlayer = glm::angle(glm::quat_cast(modelMatrixDart));
+		}
+		else if(modelSelected == 0){
+			playerPosition = modelMatrixChaval[3];
+			axisPlayer = glm::axis(glm::quat_cast(modelMatrixChaval));
+			anglePlayer = glm::angle(glm::quat_cast(modelMatrixChaval));
+		}
+		else{
+			playerPosition = modelMatrixMayow[3];
+			axisPlayer = glm::axis(glm::quat_cast(modelMatrixMayow));
+			anglePlayer = glm::angle(glm::quat_cast(modelMatrixMayow));
+		}
+		
+		if(std::isnan(anglePlayer))
+			anglePlayer = 0.0;
+		if(axisPlayer.y < 0)
+			anglePlayer = -anglePlayer;
+		if(modelSelected == 1)
+			anglePlayer -= glm::radians(90.0f);
+		camera->setCameraTarget(playerPosition);
+		camera->setAngleTarget(anglePlayer);
+		camera->updateCamera();
+		
+		
 		glm::mat4 view = camera->getViewMatrix();
 
 		// Settea la matriz de vista y projection al shader con solo color
 		shader.setMatrix4("projection", 1, false, glm::value_ptr(projection));
 		shader.setMatrix4("view", 1, false, glm::value_ptr(view));
 
+		*/
 		// Settea la matriz de vista y projection al shader con skybox
 		shaderSkybox.setMatrix4("projection", 1, false,
 				glm::value_ptr(projection));
@@ -1023,16 +1183,17 @@ void applicationLoop() {
 		 * Propiedades Luz direccional
 		 *******************************************/
 		shaderMulLighting.setVectorFloat3("viewPos", glm::value_ptr(camera->getPosition()));
-		shaderMulLighting.setVectorFloat3("directionalLight.light.ambient", glm::value_ptr(glm::vec3(0.05, 0.05, 0.05)));
-		shaderMulLighting.setVectorFloat3("directionalLight.light.diffuse", glm::value_ptr(glm::vec3(0.3, 0.3, 0.3)));
-		shaderMulLighting.setVectorFloat3("directionalLight.light.specular", glm::value_ptr(glm::vec3(0.4, 0.4, 0.4)));
+		shaderMulLighting.setVectorFloat3("directionalLight.light.ambient", glm::value_ptr(glm::vec3(0.3, 0.3, 0.3)));
+		shaderMulLighting.setVectorFloat3("directionalLight.light.diffuse", glm::value_ptr(glm::vec3(0.7, 0.7, 0.7)));
+		shaderMulLighting.setVectorFloat3("directionalLight.light.specular", glm::value_ptr(glm::vec3(0.9, 0.9, 0.9)));
 		shaderMulLighting.setVectorFloat3("directionalLight.direction", glm::value_ptr(glm::vec3(-1.0, 0.0, 0.0)));
 
 		shaderTerrain.setVectorFloat3("viewPos", glm::value_ptr(camera->getPosition()));
-		shaderTerrain.setVectorFloat3("directionalLight.light.ambient", glm::value_ptr(glm::vec3(0.05, 0.05, 0.05)));
-		shaderTerrain.setVectorFloat3("directionalLight.light.diffuse", glm::value_ptr(glm::vec3(0.3, 0.3, 0.3)));
-		shaderTerrain.setVectorFloat3("directionalLight.light.specular", glm::value_ptr(glm::vec3(0.4, 0.4, 0.4)));
+		shaderTerrain.setVectorFloat3("directionalLight.light.ambient", glm::value_ptr(glm::vec3(0.4, 0.4, 0.4)));
+		shaderTerrain.setVectorFloat3("directionalLight.light.diffuse", glm::value_ptr(glm::vec3(0.7, 0.7, 0.7)));
+		shaderTerrain.setVectorFloat3("directionalLight.light.specular", glm::value_ptr(glm::vec3(0.9, 0.9, 0.9)));
 		shaderTerrain.setVectorFloat3("directionalLight.direction", glm::value_ptr(glm::vec3(-1.0, 0.0, 0.0)));
+
 
 		/*******************************************
 		 * Propiedades SpotLights
@@ -1309,6 +1470,7 @@ void applicationLoop() {
 		/*****************************************
 		 * Objetos animados por huesos
 		 * **************************************/
+		//Mayow
 		glm::vec3 ejey = glm::normalize(terrain.getNormalTerrain(modelMatrixMayow[3][0], modelMatrixMayow[3][2]));
 		glm::vec3 ejex = glm::vec3(modelMatrixMayow[0]);
 		glm::vec3 ejez = glm::normalize(glm::cross(ejex, ejey));
@@ -1322,6 +1484,21 @@ void applicationLoop() {
 		mayowModelAnimate.setAnimationIndex(animationMayowIndex);
 		mayowModelAnimate.render(modelMatrixMayowBody);
 		animationMayowIndex = 1;
+
+		//Chaval
+		glm::vec3 ejey1 = glm::normalize(terrain.getNormalTerrain(modelMatrixChaval[3][0], modelMatrixChaval[3][2]));
+		glm::vec3 ejex1 = glm::vec3(modelMatrixChaval[0]);
+		glm::vec3 ejez1 = glm::normalize(glm::cross(ejex1, ejey1));
+		ejex1 = glm::normalize(glm::cross(ejey, ejez));
+		modelMatrixChaval[0] = glm::vec4(ejex1, 0.0);
+		modelMatrixChaval[1] = glm::vec4(ejey1, 0.0);
+		modelMatrixChaval[2] = glm::vec4(ejez1, 0.0);
+		modelMatrixChaval[3][1] = terrain.getHeightTerrain(modelMatrixChaval[3][0], modelMatrixChaval[3][2]);
+		glm::mat4 modelMatrixChavalBody = glm::mat4(modelMatrixChaval);
+		modelMatrixChavalBody = glm::scale(modelMatrixChavalBody, glm::vec3(0.008f));
+		chavalModelAnimate.render(modelMatrixChavalBody);
+		chavalModelAnimate.setAnimationIndex (0);
+
 
 		modelMatrixCowboy[3][1] = terrain.getHeightTerrain(modelMatrixCowboy[3][0], modelMatrixCowboy[3][2]);
 		glm::mat4 modelMatrixCowboyBody = glm::mat4(modelMatrixCowboy);
@@ -1339,6 +1516,7 @@ void applicationLoop() {
 		cyborgModelAnimate.setAnimationIndex(1);
 		cyborgModelAnimate.render(modelMatrixCyborgBody);
 
+		
 		/*******************************************
 		 * Skybox
 		 *******************************************/
