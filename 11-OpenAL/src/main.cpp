@@ -76,6 +76,24 @@ Box boxCollider;
 Sphere sphereCollider(10, 10);
 Cylinder rayModel(10, 10, 1.0, 1.0, 1.0);
 Box boxIntro;
+
+Box Pared1;
+Box Pared2;
+Box Pared3;
+Box Pared4;
+Box Pared5;
+Box Pared6;
+Box Pared7;
+Box Pared8;
+Box Pared9;
+Box Pared10;
+Box Pared11;
+Box Pared12;
+Box Pared13;
+Box Pared14;
+Box Pared15;
+Box Pared16;
+
 // Models complex instances
 
 // Lamps
@@ -87,12 +105,12 @@ Model modelLampPost2;
 Model mayowModelAnimate;
 
 // Terrain model instance
-Terrain terrain(-1, -1, 200, 1, "../Textures/heightmapexample1.png");
+Terrain terrain(-1, -1, 400, 1, "../Textures/heightmapexample1.png");
 
-GLuint textureCespedID, textureWallID, textureWindowID, textureHighwayID, textureLandingPadID;
+GLuint textureCespedID, textureWallID, textureWall1ID, textureWindowID, textureHighwayID, textureLandingPadID, texturePraderaID, textureMontañasHeladasID, textureMontañaRocosaID, textureDesiertoID;
 GLuint textureTerrainRID, textureTerrainGID, textureTerrainBID, textureTerrainBlendMapID;
 GLuint skyboxTextureID;
-GLuint textureInit1ID, textureInit2ID, textureActivaID, textureScreenID;
+GLuint textureInit1ID, textureInit2ID, textureInit3ID, textureActivaID, textureScreenID, textureScreen2ID, textureScreen3ID;
 
 bool iniciaPartida = false, presionarOpcion = false;
 
@@ -157,6 +175,7 @@ std::vector<float> lamp2Orientation = {
 std::map<std::string, glm::vec3> blendingUnsorted = {
 		
 };
+
 
 double deltaTime;
 double currTime, lastTime;
@@ -284,6 +303,39 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxIntro.setShader(&shaderTexture);
 	boxIntro.setScale(glm::vec3(2.0, 2.0, 1.0));
 
+	//Muros
+	Pared1.init();
+	Pared1.setShader(&shaderMulLighting);
+	Pared2.init();
+	Pared2.setShader(&shaderMulLighting);
+	Pared3.init();
+	Pared3.setShader(&shaderMulLighting);
+	Pared4.init();
+	Pared4.setShader(&shaderMulLighting);
+	Pared5.init();
+	Pared5.setShader(&shaderMulLighting);
+	Pared6.init();
+	Pared6.setShader(&shaderMulLighting);
+	Pared7.init();
+	Pared7.setShader(&shaderMulLighting);
+	Pared8.init();
+	Pared8.setShader(&shaderMulLighting);
+	Pared9.init();
+	Pared9.setShader(&shaderMulLighting);
+	Pared10.init();
+	Pared10.setShader(&shaderMulLighting);
+	Pared11.init();
+	Pared11.setShader(&shaderMulLighting);
+	Pared12.init();
+	Pared12.setShader(&shaderMulLighting);
+	Pared13.init();
+	Pared13.setShader(&shaderMulLighting);
+	Pared14.init();
+	Pared14.setShader(&shaderMulLighting);
+	Pared15.init();
+	Pared15.setShader(&shaderMulLighting);
+	Pared16.init();
+	Pared16.setShader(&shaderMulLighting);
 
 	//Lamps models
 	modelLamp1.loadModel("../models/Street-Lamp-Black/objLamp.obj");
@@ -306,7 +358,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelText = new FontTypeRendering::FontTypeRendering(screenWidth, screenHeight);
 	modelText->Initialize();
 
-	camera->setPosition(glm::vec3(0.0, 5.0, 0.0));
+	camera->setPosition(glm::vec3(0.0, 5.0, 100.0));
 	//camera->setDistanceFromTarget(distanceFromTarget);
 	//camera->setSensitivity(1.0);
 	
@@ -332,8 +384,10 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		skyboxTexture.freeImage();
 	}
 
+	
+
 	// Definiendo la textura a utilizar
-	Texture textureCesped("../Textures/grassy2.png");
+	Texture textureCesped("../Textures/cespedanimado.png");
 	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
 	textureCesped.loadImage();
 	// Creando la textura con id 1
@@ -387,7 +441,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
 		glGenerateMipmap(GL_TEXTURE_2D);
 	} else
-		std::cout << "Failed to load texture" << std::endl;
+		std::cout << "Fallo la carga de textura" << std::endl;
 	// Libera la memoria de la textura
 	textureWall.freeImage();
 
@@ -584,6 +638,25 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	textureIntro2.freeImage(); // Liberamos memoria
 
 	// Definiendo la textura
+	Texture textureIntro3("../Textures/Fin.png");
+	textureIntro3.loadImage(); // Cargar la textura
+	glGenTextures(1, &textureInit3ID); // Creando el id de la textura del landingpad
+	glBindTexture(GL_TEXTURE_2D, textureInit3ID); // Se enlaza la textura
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Wrapping en el eje u
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // Wrapping en el eje v
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Filtering de minimización
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Filtering de maximimizacion
+	if(textureIntro3.getData()){
+		// Transferir los datos de la imagen a la tarjeta
+		glTexImage2D(GL_TEXTURE_2D, 0, textureIntro3.getChannels() == 3 ? GL_RGB : GL_RGBA, textureIntro3.getWidth(), textureIntro3.getHeight(), 0,
+		textureIntro3.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, textureIntro3.getData());
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else 
+		std::cout << "Fallo la carga de textura" << std::endl;
+	textureIntro3.freeImage(); // Liberamos memoria
+
+	// Definiendo la textura
 	Texture textureScreen("../Textures/3vidas.png");
 	textureScreen.loadImage(); // Cargar la textura
 	glGenTextures(1, &textureScreenID); // Creando el id de la textura del landingpad
@@ -601,6 +674,117 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	else 
 		std::cout << "Fallo la carga de textura" << std::endl;
 	textureScreen.freeImage(); // Liberamos memoria
+
+	// Definiendo la textura
+	Texture textureScreen2("../Textures/2vidas.png");
+	textureScreen2.loadImage(); // Cargar la textura
+	glGenTextures(1, &textureScreen2ID); // Creando el id de la textura del landingpad
+	glBindTexture(GL_TEXTURE_2D, textureScreen2ID); // Se enlaza la textura
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Wrapping en el eje u
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // Wrapping en el eje v
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Filtering de minimización
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Filtering de maximimizacion
+	if(textureScreen2.getData()){
+		// Transferir los datos de la imagen a la tarjeta
+		glTexImage2D(GL_TEXTURE_2D, 0, textureScreen2.getChannels() == 3 ? GL_RGB : GL_RGBA, textureScreen2.getWidth(), textureScreen2.getHeight(), 0,
+		textureScreen2.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, textureScreen2.getData());
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else 
+		std::cout << "Fallo la carga de textura" << std::endl;
+	textureScreen2.freeImage(); // Liberamos memoria
+
+	// Definiendo la textura
+	Texture textureScreen3("../Textures/1vida.png");
+	textureScreen3.loadImage(); // Cargar la textura
+	glGenTextures(1, &textureScreen3ID); // Creando el id de la textura del landingpad
+	glBindTexture(GL_TEXTURE_2D, textureScreen3ID); // Se enlaza la textura
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Wrapping en el eje u
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // Wrapping en el eje v
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Filtering de minimización
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Filtering de maximimizacion
+	if(textureScreen3.getData()){
+		// Transferir los datos de la imagen a la tarjeta
+		glTexImage2D(GL_TEXTURE_2D, 0, textureScreen3.getChannels() == 3 ? GL_RGB : GL_RGBA, textureScreen3.getWidth(), textureScreen3.getHeight(), 0,
+		textureScreen3.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, textureScreen3.getData());
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else 
+		std::cout << "Fallo la carga de textura" << std::endl;
+	textureScreen3.freeImage(); // Liberamos memoria
+
+	//Carga de textura de las paredes
+	//Pared pradera
+	Texture texturePradera("../Textures/Pradera2.png"); 
+    texturePradera.loadImage();
+    glGenTextures(1, &texturePraderaID);
+    glBindTexture(GL_TEXTURE_2D, texturePraderaID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    if (texturePradera.getData()) {
+        glTexImage2D(GL_TEXTURE_2D, 0, texturePradera.getChannels() == 3 ? GL_RGB : GL_RGBA, texturePradera.getWidth(), texturePradera.getHeight(), 0,
+        texturePradera.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, texturePradera.getData());
+        glGenerateMipmap(GL_TEXTURE_2D);
+    } else {
+        std::cout << "Fallo la carga de textura" << std::endl;
+    }
+    texturePradera.freeImage();
+	
+	//Pared Montaña Helada
+	Texture textureMontañasHeladas("../Textures/Heladas1.png"); 
+    textureMontañasHeladas.loadImage();
+    glGenTextures(1, &textureMontañasHeladasID);
+    glBindTexture(GL_TEXTURE_2D, textureMontañasHeladasID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    if (textureMontañasHeladas.getData()) {
+        glTexImage2D(GL_TEXTURE_2D, 0, textureMontañasHeladas.getChannels() == 3 ? GL_RGB : GL_RGBA, textureMontañasHeladas.getWidth(), textureMontañasHeladas.getHeight(), 0,
+        textureMontañasHeladas.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, textureMontañasHeladas.getData());
+        glGenerateMipmap(GL_TEXTURE_2D);
+    } else {
+        std::cout << "Fallo la carga de textura" << std::endl;
+    }
+    textureMontañasHeladas.freeImage();
+
+	//Pared Montaña Rocosa
+	Texture textureMontañaRocosa("../Textures/Rocosa.png"); 
+    textureMontañaRocosa.loadImage();
+    glGenTextures(1, &textureMontañaRocosaID);
+    glBindTexture(GL_TEXTURE_2D, textureMontañaRocosaID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    if (textureMontañaRocosa.getData()) {
+        glTexImage2D(GL_TEXTURE_2D, 0, textureMontañaRocosa.getChannels() == 3 ? GL_RGB : GL_RGBA, textureMontañaRocosa.getWidth(), textureMontañaRocosa.getHeight(), 0,
+        textureMontañaRocosa.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, textureMontañaRocosa.getData());
+        glGenerateMipmap(GL_TEXTURE_2D);
+    } else {
+        std::cout << "Fallo la carga de textura" << std::endl;
+    }
+    textureMontañaRocosa.freeImage();
+
+	//Pared Desierto
+	Texture textureDesierto("../Textures/Desierto.png"); 
+    textureDesierto.loadImage();
+    glGenTextures(1, &textureDesiertoID);
+    glBindTexture(GL_TEXTURE_2D, textureDesiertoID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    if (textureDesierto.getData()) {
+        glTexImage2D(GL_TEXTURE_2D, 0, textureDesierto.getChannels() == 3 ? GL_RGB : GL_RGBA, textureDesierto.getWidth(), textureDesierto.getHeight(), 0,
+        textureDesierto.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, textureDesierto.getData());
+        glGenerateMipmap(GL_TEXTURE_2D);
+    } else {
+        std::cout << "Fallo la carga de textura" << std::endl;
+    }
+    textureDesierto.freeImage();
 
 	/*******************************************
 	 * OpenAL init
@@ -663,6 +847,22 @@ void destroy() {
 	sphereCollider.destroy();
 	rayModel.destroy();
 	boxIntro.destroy();
+	Pared1.destroy();
+	Pared2.destroy();
+	Pared3.destroy();
+	Pared4.destroy();
+	Pared5.destroy();
+	Pared6.destroy();
+	Pared7.destroy();
+	Pared8.destroy();
+	Pared9.destroy();
+	Pared10.destroy();
+	Pared11.destroy();
+	Pared12.destroy();
+	Pared13.destroy();
+	Pared14.destroy();
+	Pared15.destroy();
+	Pared16.destroy();
 
 	// Custom objects Delete
 	modelLamp1.destroy();
@@ -678,6 +878,7 @@ void destroy() {
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDeleteTextures(1, &textureCespedID);
 	glDeleteTextures(1, &textureWallID);
+	glDeleteTextures(1, &textureWall1ID);
 	glDeleteTextures(1, &textureWindowID);
 	glDeleteTextures(1, &textureHighwayID);
 	glDeleteTextures(1, &textureLandingPadID);
@@ -687,7 +888,10 @@ void destroy() {
 	glDeleteTextures(1, &textureTerrainBlendMapID);
 	glDeleteTextures(1, &textureInit1ID);
 	glDeleteTextures(1, &textureInit2ID);
+	glDeleteTextures(1, &textureInit3ID);
 	glDeleteTextures(1, &textureScreenID);
+	glDeleteTextures(1, &textureScreen2ID);
+	glDeleteTextures(1, &textureScreen3ID);
 
 	// Cube Maps Delete
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
@@ -872,6 +1076,8 @@ bool processInput(bool continueApplication) {
 	return continueApplication;
 }
 
+
+
 void applicationLoop() {
 	bool psi = true;
 
@@ -886,7 +1092,7 @@ void applicationLoop() {
 	int maxAdvance = 0.0;
 
 
-	modelMatrixMayow = glm::translate(modelMatrixMayow, glm::vec3(13.0f, 0.05f, -5.0f));
+	modelMatrixMayow = glm::translate(modelMatrixMayow, glm::vec3(0.0f, 0.05f, 100.0f));
 
 	lastTime = TimeManager::Instance().GetTime();
 
@@ -1094,6 +1300,88 @@ void applicationLoop() {
 		/*******************************************
 		 * Custom objects obj
 		 *******************************************/
+		//Paredes
+		glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texturePraderaID);
+        shaderMulLighting.setInt("texture1", 0);
+        //Pared1
+		Pared1.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared1.setPosition(glm::vec3(-10.0f, 7.5f, 75.0f));
+		Pared1.render();
+		//Pared2
+		Pared2.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared2.setPosition(glm::vec3(-10.0f, 7.5f, 25.0f));
+		Pared2.render();
+		//Pared3
+		Pared3.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared3.setPosition(glm::vec3(10.0f, 7.5f, 75.0f));
+		Pared3.render();
+		//Pared4
+		Pared4.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared4.setPosition(glm::vec3(10.0f, 7.5f, 25.0f));
+		Pared4.render();
+
+		glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureMontañasHeladasID);
+        shaderMulLighting.setInt("texture1", 0);
+		//Pared5
+		Pared5.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared5.setPosition(glm::vec3(-10.0f, 7.5f, -25.0f));
+		Pared5.render();
+		//Pared6
+		Pared6.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared6.setPosition(glm::vec3(-10.0f, 7.5f, -75.0f));
+		Pared6.render();
+		//Pared7
+		Pared7.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared7.setPosition(glm::vec3(10.0f, 7.5f, -25.0f));
+		Pared7.render();
+		//Pared8
+		Pared8.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared8.setPosition(glm::vec3(10.0f, 7.5f, -75.0f));
+		Pared8.render();
+
+		glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureMontañaRocosaID);
+        shaderMulLighting.setInt("texture1", 0);
+		//Pared9
+		Pared9.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared9.setPosition(glm::vec3(-10.0f, 7.5f, -125.0f));
+		Pared9
+		.render();
+		//Pared10
+		Pared10.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared10.setPosition(glm::vec3(-10.0f, 7.5f, -175.0f));
+		Pared10.render();
+		//Pared11
+		Pared11.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared11.setPosition(glm::vec3(10.0f, 7.5f, -125.0f));
+		Pared11.render();
+		//Pared12
+		Pared12.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared12.setPosition(glm::vec3(10.0f, 7.5f, -175.0f));
+		Pared12.render();
+
+		glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureDesiertoID);
+        shaderMulLighting.setInt("texture1", 0);
+		//Pared13
+		Pared13.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared13.setPosition(glm::vec3(-10.0f, 7.5f, -225.0f));
+		Pared13.render();
+		//Pared14
+		Pared14.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared14.setPosition(glm::vec3(-10.0f, 7.5f, -275.0f));
+		Pared14.render();
+		//Pared15
+		Pared15.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared15.setPosition(glm::vec3(10.0f, 7.5f, -225.0f));
+		Pared15.render();
+		//Pared16
+		Pared16.setScale(glm::vec3(0.2, 15.0, 50.0));
+		Pared16.setPosition(glm::vec3(10.0f, 7.5f, -275.0f));
+		Pared16.render();
+		
 		
 		// Render lamp
 		for(int i = 0; i < lamp1Position.size(); i++){
