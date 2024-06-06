@@ -96,6 +96,90 @@ Box Pared16;
 
 // Models complex instances
 
+Model modelTuboM;
+Model modelTuboM2;
+Model modelTuboM3;
+Model modelTuboM4;
+Model modelTuboM5;
+Model modelTuboM6;
+Model modelTuboM7;
+Model modelTuboM8;
+Model modelTuboM9;
+Model modelTuboM10;
+Model modelTuboM11;
+Model modelTuboM12;
+Model modelTuboM13;
+Model modelTuboM14;
+Model modelTuboM15;
+Model modelTuboM16;
+Model modelTuboM17;
+Model modelTuboM18;
+Model modelTuboM19;
+Model modelTuboM20;
+
+Model modelPilarH;
+Model modelPilarH2;
+Model modelPilarH3;
+Model modelPilarH4;
+Model modelPilarH5;
+Model modelPilarH6;
+Model modelPilarH7;
+Model modelPilarH8;
+Model modelPilarH9;
+Model modelPilarH10;
+Model modelPilarH11;
+Model modelPilarH12;
+Model modelPilarH13;
+Model modelPilarH14;
+Model modelPilarH15;
+Model modelPilarH16;
+Model modelPilarH17;
+Model modelPilarH18;
+Model modelPilarH19;
+Model modelPilarH20;
+
+Model modelPicoR;
+Model modelPicoR2;
+Model modelPicoR3;
+Model modelPicoR4;
+Model modelPicoR5;
+Model modelPicoR6;
+Model modelPicoR7;
+Model modelPicoR8;
+Model modelPicoR9;
+Model modelPicoR10;
+Model modelPicoR11;
+Model modelPicoR12;
+Model modelPicoR13;
+Model modelPicoR14;
+Model modelPicoR15;
+Model modelPicoR16;
+Model modelPicoR17;
+Model modelPicoR18;
+Model modelPicoR19;
+Model modelPicoR20;
+
+Model modelCactus;
+Model modelCactus2;
+Model modelCactus3;
+Model modelCactus4;
+Model modelCactus5;
+Model modelCactus6;
+Model modelCactus7;
+Model modelCactus8;
+Model modelCactus9;
+Model modelCactus10;
+Model modelCactus11;
+Model modelCactus12;
+Model modelCactus13;
+Model modelCactus14;
+Model modelCactus15;
+Model modelCactus16;
+Model modelCactus17;
+Model modelCactus18;
+Model modelCactus19;
+Model modelCactus20;
+
 // Lamps
 Model modelLamp1;
 Model modelLamp2;
@@ -107,7 +191,8 @@ Model mayowModelAnimate;
 // Terrain model instance
 Terrain terrain(-1, -1, 400, 1, "../Textures/heightmapexample1.png");
 
-GLuint textureCespedID, textureWallID, textureWall1ID, textureWindowID, textureHighwayID, textureLandingPadID, texturePraderaID, textureMontañasHeladasID, textureMontañaRocosaID, textureDesiertoID;
+GLuint textureCespedID, textureWallID, textureWall1ID, textureWindowID, textureHighwayID, textureLandingPadID, 
+		texturePraderaID, textureMontañasHeladasID, textureMontañaRocosaID, textureDesiertoID, textureHieloID, textureArenaID;
 GLuint textureTerrainRID, textureTerrainGID, textureTerrainBID, textureTerrainBlendMapID;
 GLuint skyboxTextureID;
 GLuint textureInit1ID, textureInit2ID, textureInit3ID, textureActivaID, textureScreenID, textureScreen2ID, textureScreen3ID;
@@ -139,6 +224,47 @@ int lastMousePosX, offsetX = 0;
 int lastMousePosY, offsetY = 0;
 
 // Model matrix definitions
+glm::mat4 modelMatrixTuboM = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM2 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM3 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM4 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM5 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM6 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM7 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM8 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM9 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM10 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM11 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM12 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM13 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM14 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM15 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM16 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM17 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM18 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM19 = glm::mat4(1.0f);
+glm::mat4 modelMatrixTuboM20 = glm::mat4(1.0f);
+
+glm::mat4 modelMatrixPilarH = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH2 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH3 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH4 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH5 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH6 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH7 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH8 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH9 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH10 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH11 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH12 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH13 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH14 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH15 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH16 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH17 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH18 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH19 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPilarH20 = glm::mat4(1.0f);
 
 glm::mat4 modelMatrixMayow = glm::mat4(1.0f);
 
@@ -336,6 +462,11 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	Pared15.setShader(&shaderMulLighting);
 	Pared16.init();
 	Pared16.setShader(&shaderMulLighting);
+
+	modelTuboM.loadModel("../models/Modelos Videojuego/TuboM.obj");
+	modelTuboM.setShader(&shaderMulLighting);
+	modelTuboM2.loadModel("../models/Modelos Videojuego/TuboM.obj");
+	modelTuboM2.setShader(&shaderMulLighting);
 
 	//Lamps models
 	modelLamp1.loadModel("../models/Street-Lamp-Black/objLamp.obj");
@@ -713,6 +844,44 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "Fallo la carga de textura" << std::endl;
 	textureScreen3.freeImage(); // Liberamos memoria
 
+	// Definiendo la textura
+	Texture textureHielo("../Textures/Hielo.png");
+	textureHielo.loadImage(); // Cargar la textura
+	glGenTextures(1, &textureHieloID); // Creando el id de la textura del landingpad
+	glBindTexture(GL_TEXTURE_2D, textureHieloID); // Se enlaza la textura
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Wrapping en el eje u
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // Wrapping en el eje v
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Filtering de minimización
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Filtering de maximimizacion
+	if(textureHielo.getData()){
+		// Transferir los datos de la imagen a la tarjeta
+		glTexImage2D(GL_TEXTURE_2D, 0, textureHielo.getChannels() == 3 ? GL_RGB : GL_RGBA, textureHielo.getWidth(), textureHielo.getHeight(), 0,
+		textureHielo.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, textureHielo.getData());
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else 
+		std::cout << "Fallo la carga de textura" << std::endl;
+	textureHielo.freeImage(); // Liberamos memoria
+
+	// Definiendo la textura
+	Texture textureArena("../Textures/Arena.png");
+	textureArena.loadImage(); // Cargar la textura
+	glGenTextures(1, &textureArenaID); // Creando el id de la textura del landingpad
+	glBindTexture(GL_TEXTURE_2D, textureArenaID); // Se enlaza la textura
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Wrapping en el eje u
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // Wrapping en el eje v
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Filtering de minimización
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Filtering de maximimizacion
+	if(textureArena.getData()){
+		// Transferir los datos de la imagen a la tarjeta
+		glTexImage2D(GL_TEXTURE_2D, 0, textureArena.getChannels() == 3 ? GL_RGB : GL_RGBA, textureArena.getWidth(), textureArena.getHeight(), 0,
+		textureArena.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, textureArena.getData());
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else 
+		std::cout << "Fallo la carga de textura" << std::endl;
+	textureArena.freeImage(); // Liberamos memoria
+
 	//Carga de textura de las paredes
 	//Pared pradera
 	Texture texturePradera("../Textures/Pradera2.png"); 
@@ -863,6 +1032,9 @@ void destroy() {
 	Pared14.destroy();
 	Pared15.destroy();
 	Pared16.destroy();
+
+	modelTuboM.destroy();
+	modelTuboM2.destroy();
 
 	// Custom objects Delete
 	modelLamp1.destroy();
@@ -1091,6 +1263,10 @@ void applicationLoop() {
 	int numberAdvance = 0;
 	int maxAdvance = 0.0;
 
+	modelMatrixTuboM = glm::translate(modelMatrixTuboM, glm::vec3(0.0, 0.0, 80.0));
+
+	modelMatrixTuboM2 = glm::translate(modelMatrixTuboM2, glm::vec3(0.0, 15.0, 80.0));
+	modelMatrixTuboM2 = glm::rotate(modelMatrixTuboM2, glm::radians(180.0f), glm::vec3(0, 0, 1));
 
 	modelMatrixMayow = glm::translate(modelMatrixMayow, glm::vec3(0.0f, 0.05f, 100.0f));
 
@@ -1382,7 +1558,17 @@ void applicationLoop() {
 		Pared16.setPosition(glm::vec3(10.0f, 7.5f, -275.0f));
 		Pared16.render();
 		
+		//------------------Obstaculos-------------------------------
+		//Tubo1
+		modelTuboM.setScale(glm::vec3(0.55f, 0.45f, 0.55f));
+		modelTuboM.render(modelMatrixTuboM);
+		glActiveTexture(GL_TEXTURE0);
 		
+		//Tubo2
+		modelTuboM.setScale(glm::vec3(0.55f, 0.40f, 0.55f));
+		modelTuboM.render(modelMatrixTuboM2);
+		glActiveTexture(GL_TEXTURE0);
+
 		// Render lamp
 		for(int i = 0; i < lamp1Position.size(); i++){
 			lamp1Position[i].y = terrain.getHeightTerrain(lamp1Position[i].x, lamp1Position[i].z);
