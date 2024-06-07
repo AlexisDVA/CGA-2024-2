@@ -118,7 +118,7 @@ Model modelLampPost2;
 Model mayowModelAnimate;
 
 // Terrain model instance
-Terrain terrain(-1, -1, 400, 1, "../Textures/heightmapexample1.png");
+Terrain terrain(-1, -1, 400, 7, "../Textures/HeightmapProyecto_.png");
 
 GLuint textureCespedID, textureWallID, texturePraderaID, textureMontañasHeladasID, textureMontañaRocosaID, textureDesiertoID, textureHieloID, textureArenaID;
 GLuint textureTerrainRID, textureTerrainGID, textureTerrainBID, textureTerrainBlendMapID;
@@ -480,7 +480,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	}
 
 	//Definiendo la textura a utilizar.
-	Texture textureCesped("../Textures/cespedanimado.png");
+	Texture textureCesped("../Textures/BlendmapBlack_.png");
 	//Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria).
 	textureCesped.loadImage();
 	//Creando la textura con id 1.
@@ -511,7 +511,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	// Defininiendo texturas del mapa de mezclas
 	// Definiendo la textura
-	Texture textureR("../Textures/mud.png");
+	Texture textureR("../Textures/BlendmapRed_.png");
 	textureR.loadImage(); // Cargar la textura
 	glGenTextures(1, &textureTerrainRID); // Creando el id de la textura del landingpad
 	glBindTexture(GL_TEXTURE_2D, textureTerrainRID); // Se enlaza la textura
@@ -530,7 +530,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	textureR.freeImage(); // Liberamos memoria
 
 	// Definiendo la textura
-	Texture textureG("../Textures/grassFlowers.png");
+	Texture textureG("../Textures/BlendmapGreen_.png");
 	textureG.loadImage(); // Cargar la textura
 	glGenTextures(1, &textureTerrainGID); // Creando el id de la textura del landingpad
 	glBindTexture(GL_TEXTURE_2D, textureTerrainGID); // Se enlaza la textura
@@ -549,7 +549,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	textureG.freeImage(); // Liberamos memoria
 
 	// Definiendo la textura
-	Texture textureB("../Textures/path.png");
+	Texture textureB("../Textures/BlendmapBlue_.png");
 	textureB.loadImage(); // Cargar la textura
 	glGenTextures(1, &textureTerrainBID); // Creando el id de la textura del landingpad
 	glBindTexture(GL_TEXTURE_2D, textureTerrainBID); // Se enlaza la textura
@@ -568,7 +568,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	textureB.freeImage(); // Liberamos memoria
 
 	// Definiendo la textura
-	Texture textureBlendMap("../Textures/blendMap.png");
+	Texture textureBlendMap("../Textures/BlendmapProyecto_.png");
 	textureBlendMap.loadImage(); // Cargar la textura
 	glGenTextures(1, &textureTerrainBlendMapID); // Creando el id de la textura del landingpad
 	glBindTexture(GL_TEXTURE_2D, textureTerrainBlendMapID); // Se enlaza la textura
