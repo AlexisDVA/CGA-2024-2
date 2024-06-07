@@ -1,66 +1,40 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
-//glew include
 #include <GL/glew.h>
-
-//std includes
 #include <string>
 #include <iostream>
-
-//glfw include
 #include <GLFW/glfw3.h>
-
-// program include
 #include "Headers/TimeManager.h"
-
-// Shader include
 #include "Headers/Shader.h"
-
-// Model geometric includes
 #include "Headers/Sphere.h"
 #include "Headers/Cylinder.h"
 #include "Headers/Box.h"
 #include "Headers/FirstPersonCamera.h"
 //#include "Headers/ThirdPersonCamera.h"
-
-// Font rendering include
 #include "Headers/FontTypeRendering.h"
-
-//GLM include
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
 #include "Headers/Texture.h"
-
-// Include loader Model class
 #include "Headers/Model.h"
-
-// Include Terrain
 #include "Headers/Terrain.h"
-
 #include "Headers/AnimationUtils.h"
-
-// Include Colision headers functions
 #include "Headers/Colisiones.h"
-
+#include "Headers/ShadowBox.h"
+#include <AL/alut.h>
 #define ARRAY_SIZE_IN_ELEMENTS(a) (sizeof(a)/sizeof(a[0]))
-
 int screenWidth;
 int screenHeight;
-
 GLFWwindow *window;
 
 Shader shader;
-//Shader con skybox
 Shader shaderSkybox;
-//Shader con multiples luces
 Shader shaderMulLighting;
-//Shader para el terreno
 Shader shaderTerrain;
-// Shader para dibujar un objeto con solo textura
 Shader shaderTexture;
+Shader shaderDepth;
+Shader shaderViewDepth;
 
 std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
 //std::shared_ptr<Camera> camera(new ThirdPersonCamera());
@@ -68,13 +42,9 @@ float distanceFromTarget = 7.0;
 
 Sphere skyboxSphere(20, 20);
 Box boxCesped;
-Box boxWalls;
-Box boxHighway;
-Box boxLandingPad;
 Sphere esfera1(10, 10);
 Box boxCollider;
 Sphere sphereCollider(10, 10);
-Cylinder rayModel(10, 10, 1.0, 1.0, 1.0);
 Box boxIntro;
 
 Box Pared1;
@@ -94,8 +64,7 @@ Box Pared14;
 Box Pared15;
 Box Pared16;
 
-// Models complex instances
-
+//Models complex instances.
 Model modelTuboM;
 Model modelTuboM2;
 Model modelTuboM3;
@@ -106,7 +75,6 @@ Model modelTuboM7;
 Model modelTuboM8;
 Model modelTuboM9;
 Model modelTuboM10;
-
 
 Model modelPilarH;
 Model modelPilarH2;
@@ -141,27 +109,24 @@ Model modelCactus8;
 Model modelCactus9;
 Model modelCactus10;
 
-
-// Lamps
+//Lamps.
 Model modelLamp1;
 Model modelLamp2;
 Model modelLampPost2;
-// Modelos animados
-// Mayow
+//Modelos animados.
+//Mayow.
 Model mayowModelAnimate;
 
 // Terrain model instance
 Terrain terrain(-1, -1, 400, 1, "../Textures/heightmapexample1.png");
 
-GLuint textureCespedID, textureWallID, textureWall1ID, textureWindowID, textureHighwayID, textureLandingPadID, 
-		texturePraderaID, textureMontañasHeladasID, textureMontañaRocosaID, textureDesiertoID, textureHieloID, textureArenaID;
+GLuint textureCespedID, textureWallID, texturePraderaID, textureMontañasHeladasID, textureMontañaRocosaID, textureDesiertoID, textureHieloID, textureArenaID;
 GLuint textureTerrainRID, textureTerrainGID, textureTerrainBID, textureTerrainBlendMapID;
 GLuint skyboxTextureID;
 GLuint textureInit1ID, textureInit2ID, textureInit3ID, textureActivaID, textureScreenID, textureScreen2ID, textureScreen3ID;
 
 bool iniciaPartida = false, presionarOpcion = false;
-
-// Modelo para el render del texto
+// Modelo para el render del texto.
 FontTypeRendering::FontTypeRendering *modelText;
 
 GLenum types[6] = {
@@ -171,7 +136,6 @@ GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
 GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
 GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
 GL_TEXTURE_CUBE_MAP_NEGATIVE_Z };
-
 std::string fileNames[6] = { "../Textures/Cielo/Dia_derecha.jpg",
 		"../Textures/Cielo/Dia_izquierda.jpg",
 		"../Textures/Cielo/Dia_arriba.jpg",
@@ -185,7 +149,7 @@ bool exitApp = false;
 int lastMousePosX, offsetX = 0;
 int lastMousePosY, offsetY = 0;
 
-// Model matrix definitions
+//Model matrix definitions.
 glm::mat4 modelMatrixTuboM = glm::mat4(1.0f);
 glm::mat4 modelMatrixTuboM2 = glm::mat4(1.0f);
 glm::mat4 modelMatrixTuboM3 = glm::mat4(1.0f);
@@ -207,7 +171,6 @@ glm::mat4 modelMatrixPilarH7 = glm::mat4(1.0f);
 glm::mat4 modelMatrixPilarH8 = glm::mat4(1.0f);
 glm::mat4 modelMatrixPilarH9 = glm::mat4(1.0f);
 glm::mat4 modelMatrixPilarH10 = glm::mat4(1.0f);
-
 
 glm::mat4 modelMatrixPicoR = glm::mat4(1.0f);
 glm::mat4 modelMatrixPicoR2 = glm::mat4(1.0f);
@@ -233,19 +196,10 @@ glm::mat4 modelMatrixCactus10 = glm::mat4(1.0f);
 
 glm::mat4 modelMatrixMayow = glm::mat4(1.0f);
 
-
 int animationMayowIndex = 1;
 int modelSelected = 0;
-bool enableCountSelected = true;
 
-// Variables to animations keyframes
-bool saveFrame = false, availableSave = true;
-std::ofstream myfile;
-std::string fileName = "";
-bool record = false;
-
-
-// Lamps position
+//Lamps position.
 std::vector<glm::vec3> lamp1Position = {
 	glm::vec3(-7.03, 0, -19.14),
 	glm::vec3(24.41, 0, -34.57),
@@ -262,34 +216,26 @@ std::vector<float> lamp2Orientation = {
 	21.37 + 90, -65.0 + 90
 };
 
-// Blending model unsorted
+//Blending model unsorted.
 std::map<std::string, glm::vec3> blendingUnsorted = {
-		
 };
-
 
 double deltaTime;
 double currTime, lastTime;
 
+//Fly.
+bool Fly_ = false;
+float FlyG_ = 2.90;
+double T_ = 1;
+double Start_ = 0;
 
-// Jump variables
-bool isJump = false;
-float GRAVITY = 1.81;
-double tmv = 0;
-double startTimeJump = 0;
-
-// Colliders
+//Colliders.
 std::map<std::string, std::tuple<AbstractModel::OBB, glm::mat4, glm::mat4> > collidersOBB;
 std::map<std::string, std::tuple<AbstractModel::SBB, glm::mat4, glm::mat4> > collidersSBB;
 
-// Variables animacion maquina de estados eclipse
-const float avance = 0.1;
-const float giroEclipse = 0.5f;
-
 // Se definen todos las funciones.
 void reshapeCallback(GLFWwindow *Window, int widthRes, int heightRes);
-void keyCallback(GLFWwindow *window, int key, int scancode, int action,
-		int mode);
+void keyCallback(GLFWwindow *window, int key, int scancode, int action,	int mode);
 void mouseCallback(GLFWwindow *window, double xpos, double ypos);
 void mouseButtonCallback(GLFWwindow *window, int button, int state, int mod);
 //void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
@@ -297,27 +243,21 @@ void init(int width, int height, std::string strTitle, bool bFullScreen);
 void destroy();
 bool processInput(bool continueApplication = true);
 
-// Implementacion de todas las funciones.
+//Implementacion de todas las funciones.
 void init(int width, int height, std::string strTitle, bool bFullScreen) {
-
 	if (!glfwInit()) {
 		std::cerr << "Failed to initialize GLFW" << std::endl;
 		exit(-1);
 	}
-
 	screenWidth = width;
 	screenHeight = height;
-
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
 	if (bFullScreen)
-		window = glfwCreateWindow(width, height, strTitle.c_str(),
-				glfwGetPrimaryMonitor(), nullptr);
+		window = glfwCreateWindow(width, height, strTitle.c_str(), glfwGetPrimaryMonitor(), nullptr);
 	else
-		window = glfwCreateWindow(width, height, strTitle.c_str(), nullptr,
-				nullptr);
+		window = glfwCreateWindow(width, height, strTitle.c_str(), nullptr, nullptr);
 
 	if (window == nullptr) {
 		std::cerr
@@ -329,7 +269,6 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(0);
-
 	glfwSetWindowSizeCallback(window, reshapeCallback);
 	glfwSetKeyCallback(window, keyCallback);
 	glfwSetCursorPosCallback(window, mouseCallback);
@@ -337,7 +276,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	//glfwSetScrollCallback(window, scrollCallback);
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-	// Init glew
+	//Init glew.
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 	if (GLEW_OK != err) {
@@ -347,54 +286,37 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	glViewport(0, 0, screenWidth, screenHeight);
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
-
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
-	// Inicialización de los shaders
+	//Inicialización de los shaders.
 	shader.initialize("../Shaders/colorShader.vs", "../Shaders/colorShader.fs");
 	shaderSkybox.initialize("../Shaders/skyBox.vs", "../Shaders/skyBox_fog.fs");
-	shaderMulLighting.initialize("../Shaders/iluminacion_textura_animation_fog.vs", "../Shaders/multipleLights_fog.fs");
-	shaderTerrain.initialize("../Shaders/terrain_fog.vs", "../Shaders/terrain_fog.fs");
+	shaderMulLighting.initialize("../Shaders/iluminacion_textura_animation_shadow.vs", "../Shaders/multipleLights_shadow.fs");
+	shaderTerrain.initialize("../Shaders/terrain_shadow.vs", "../Shaders/terrain_shadow.fs");
 	shaderTexture.initialize("../Shaders/texturizado.vs", "../Shaders/texturizado.fs");
+	shaderViewDepth.initialize("../Shaders/texturizado.vs", "../Shaders/texturizado_depth_view.fs");
+	shaderDepth.initialize("../Shaders/shadow_mapping_depth.vs", "../Shaders/shadow_mapping_depth.fs");
 
-	// Inicializacion de los objetos.
+	//Inicializacion de los objetos.
 	skyboxSphere.init();
 	skyboxSphere.setShader(&shaderSkybox);
 	skyboxSphere.setScale(glm::vec3(20.0f, 20.0f, 20.0f));
-
 	boxCollider.init();
 	boxCollider.setShader(&shader);
 	boxCollider.setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-
 	sphereCollider.init();
 	sphereCollider.setShader(&shader);
 	sphereCollider.setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-
-	rayModel.init();
-	rayModel.setShader(&shader);
-	rayModel.setColor(glm::vec4(1.0));
-
 	boxCesped.init();
 	boxCesped.setShader(&shaderMulLighting);
-
-	boxWalls.init();
-	boxWalls.setShader(&shaderMulLighting);
-
-	boxHighway.init();
-	boxHighway.setShader(&shaderMulLighting);
-
-	boxLandingPad.init();
-	boxLandingPad.setShader(&shaderMulLighting);
-
 	esfera1.init();
 	esfera1.setShader(&shaderMulLighting);
-
 	boxIntro.init();
 	boxIntro.setShader(&shaderTexture);
 	boxIntro.setScale(glm::vec3(2.0, 2.0, 1.0));
 
-	//Muros
+	//Muros.
 	Pared1.init();
 	Pared1.setShader(&shaderMulLighting);
 	Pared2.init();
@@ -449,7 +371,6 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelTuboM10.loadModel("../models/Modelos Videojuego/TuboM.obj");
 	modelTuboM10.setShader(&shaderMulLighting);
 	
-
 	modelPilarH.loadModel("../models/Modelos Videojuego/PilarHielo.obj");
 	modelPilarH.setShader(&shaderMulLighting);
 	modelPilarH2.loadModel("../models/Modelos Videojuego/PilarHielo.obj");
@@ -470,7 +391,6 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelPilarH9.setShader(&shaderMulLighting);
 	modelPilarH10.loadModel("../models/Modelos Videojuego/PilarHielo.obj");
 	modelPilarH10.setShader(&shaderMulLighting);
-	
 
 	modelPicoR.loadModel("../models/Modelos Videojuego/PicoRock.obj");
 	modelPicoR.setShader(&shaderMulLighting);
@@ -492,7 +412,6 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelPicoR9.setShader(&shaderMulLighting);
 	modelPicoR10.loadModel("../models/Modelos Videojuego/PicoRock.obj");
 	modelPicoR10.setShader(&shaderMulLighting);
-	
 
 	modelCactus.loadModel("../models/Modelos Videojuego/Cactus.obj");
 	modelCactus.setShader(&shaderMulLighting);
@@ -515,8 +434,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelCactus10.loadModel("../models/Modelos Videojuego/Cactus.obj");
 	modelCactus10.setShader(&shaderMulLighting);
 
-
-	//Lamps models
+	//Lamps models.
 	modelLamp1.loadModel("../models/Street-Lamp-Black/objLamp.obj");
 	modelLamp1.setShader(&shaderMulLighting);
 	modelLamp2.loadModel("../models/Street_Light/Lamp.obj");
@@ -524,16 +442,15 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelLampPost2.loadModel("../models/Street_Light/LampPost.obj");
 	modelLampPost2.setShader(&shaderMulLighting);
 
-	// Mayow
+	//Mayow.
 	mayowModelAnimate.loadModel("../models/mayow/personaje2.fbx");
 	mayowModelAnimate.setShader(&shaderMulLighting);
-	
 
-	// Terreno
+	//Terreno.
 	terrain.init();
 	terrain.setShader(&shaderTerrain);
 
-	// Se inicializa el model de render text
+	//Se inicializa el model de render text.
 	modelText = new FontTypeRendering::FontTypeRendering(screenWidth, screenHeight);
 	modelText->Initialize();
 
@@ -541,17 +458,16 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	//camera->setDistanceFromTarget(distanceFromTarget);
 	//camera->setSensitivity(1.0);
 	
-	// Carga de texturas para el skybox
+	//Carga de texturas para el skybox.
 	Texture skyboxTexture = Texture("");
 	glGenTextures(1, &skyboxTextureID);
-	// Tipo de textura CUBE MAP
+	//Tipo de textura CUBE MAP.
 	glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTextureID);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);// set texture wrapping to GL_REPEAT (default wrapping method)
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//Set texture wrapping to GL_REPEAT (default wrapping method).
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//Set texture wrapping to GL_REPEAT (default wrapping method).
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
 	for (int i = 0; i < ARRAY_SIZE_IN_ELEMENTS(types); i++) {
 		skyboxTexture = Texture(fileNames[i]);
 		skyboxTexture.loadImage(true);
@@ -563,143 +479,35 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		skyboxTexture.freeImage();
 	}
 
-	
-
-	// Definiendo la textura a utilizar
+	//Definiendo la textura a utilizar.
 	Texture textureCesped("../Textures/cespedanimado.png");
-	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	//Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria).
 	textureCesped.loadImage();
-	// Creando la textura con id 1
+	//Creando la textura con id 1.
 	glGenTextures(1, &textureCespedID);
-	// Enlazar esa textura a una tipo de textura de 2D.
+	//Enlazar esa textura a una tipo de textura de 2D.
 	glBindTexture(GL_TEXTURE_2D, textureCespedID);
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	//Set the texture wrapping parameters.
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);//Set texture wrapping to GL_REPEAT (default wrapping method).
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-	// set texture filtering parameters
+	//Set texture filtering parameters.
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// Verifica si se pudo abrir la textura
+	//Verifica si se pudo abrir la textura.
 	if (textureCesped.getData()) {
-		// Transferis los datos de la imagen a memoria
-		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
-		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
-		// a los datos
+		//Transferis los datos de la imagen a memoria
+		//Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
+		//Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
+		//a los datos.
 		std::cout << "Numero de canales :=> " << textureCesped.getChannels() << std::endl;
 		glTexImage2D(GL_TEXTURE_2D, 0, textureCesped.getChannels() == 3 ? GL_RGB : GL_RGBA, textureCesped.getWidth(), textureCesped.getHeight(), 0,
 		textureCesped.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, textureCesped.getData());
-		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
+		//Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos).
 		glGenerateMipmap(GL_TEXTURE_2D);
 	} else
 		std::cout << "Failed to load texture" << std::endl;
-	// Libera la memoria de la textura
+	//Libera la memoria de la textura.
 	textureCesped.freeImage();
-
-	// Definiendo la textura a utilizar
-	Texture textureWall("../Textures/whiteWall.jpg");
-	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
-	textureWall.loadImage();
-	// Creando la textura con id 1
-	glGenTextures(1, &textureWallID);
-	// Enlazar esa textura a una tipo de textura de 2D.
-	glBindTexture(GL_TEXTURE_2D, textureWallID);
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// Verifica si se pudo abrir la textura
-	if (textureWall.getData()) {
-		// Transferis los datos de la imagen a memoria
-		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
-		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
-		// a los datos
-		glTexImage2D(GL_TEXTURE_2D, 0, textureWall.getChannels() == 3 ? GL_RGB : GL_RGBA, textureWall.getWidth(), textureWall.getHeight(), 0,
-		textureWall.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, textureWall.getData());
-		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
-		glGenerateMipmap(GL_TEXTURE_2D);
-	} else
-		std::cout << "Fallo la carga de textura" << std::endl;
-	// Libera la memoria de la textura
-	textureWall.freeImage();
-
-	// Definiendo la textura a utilizar
-	Texture textureWindow("../Textures/ventana.png");
-	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
-	textureWindow.loadImage();
-	// Creando la textura con id 1
-	glGenTextures(1, &textureWindowID);
-	// Enlazar esa textura a una tipo de textura de 2D.
-	glBindTexture(GL_TEXTURE_2D, textureWindowID);
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// Verifica si se pudo abrir la textura
-	if (textureWindow.getData()) {
-		// Transferis los datos de la imagen a memoria
-		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
-		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
-		// a los datos
-		glTexImage2D(GL_TEXTURE_2D, 0, textureWindow.getChannels() == 3 ? GL_RGB : GL_RGBA, textureWindow.getWidth(), textureWindow.getHeight(), 0,
-		textureWindow.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, textureWindow.getData());
-		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
-		glGenerateMipmap(GL_TEXTURE_2D);
-	} else
-		std::cout << "Failed to load texture" << std::endl;
-	// Libera la memoria de la textura
-	textureWindow.freeImage();
-
-	// Definiendo la textura a utilizar
-	Texture textureHighway("../Textures/highway.jpg");
-	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
-	textureHighway.loadImage();
-	// Creando la textura con id 1
-	glGenTextures(1, &textureHighwayID);
-	// Enlazar esa textura a una tipo de textura de 2D.
-	glBindTexture(GL_TEXTURE_2D, textureHighwayID);
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// Verifica si se pudo abrir la textura
-	if (textureHighway.getData()) {
-		// Transferis los datos de la imagen a memoria
-		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
-		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
-		// a los datos
-		glTexImage2D(GL_TEXTURE_2D, 0, textureHighway.getChannels() == 3 ? GL_RGB : GL_RGBA, textureHighway.getWidth(), textureHighway.getHeight(), 0,
-		textureHighway.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, textureHighway.getData());
-		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
-		glGenerateMipmap(GL_TEXTURE_2D);
-	} else
-		std::cout << "Failed to load texture" << std::endl;
-	// Libera la memoria de la textura
-	textureHighway.freeImage();
-
-	// Definiendo la textura
-	Texture textureLandingPad("../Textures/landingPad.jpg");
-	textureLandingPad.loadImage(); // Cargar la textura
-	glGenTextures(1, &textureLandingPadID); // Creando el id de la textura del landingpad
-	glBindTexture(GL_TEXTURE_2D, textureLandingPadID); // Se enlaza la textura
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Wrapping en el eje u
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // Wrapping en el eje v
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Filtering de minimización
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Filtering de maximimizacion
-	if(textureLandingPad.getData()){
-		// Transferir los datos de la imagen a la tarjeta
-		glTexImage2D(GL_TEXTURE_2D, 0, textureLandingPad.getChannels() == 3 ? GL_RGB : GL_RGBA, textureLandingPad.getWidth(), textureLandingPad.getHeight(), 0,
-		textureLandingPad.getChannels() == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, textureLandingPad.getData());
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else 
-		std::cout << "Fallo la carga de textura" << std::endl;
-	textureLandingPad.freeImage(); // Liberamos memoria
 
 	// Defininiendo texturas del mapa de mezclas
 	// Definiendo la textura
@@ -1002,67 +810,20 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
         std::cout << "Fallo la carga de textura" << std::endl;
     }
     textureDesierto.freeImage();
-
-	/*******************************************
-	 * OpenAL init
-	 *******************************************/
-	/*alutInit(0, nullptr);
-	alListenerfv(AL_POSITION, listenerPos);
-	alListenerfv(AL_VELOCITY, listenerVel);
-	alListenerfv(AL_ORIENTATION, listenerOri);
-	alGetError(); // clear any error messages
-	if (alGetError() != AL_NO_ERROR) {
-		printf("- Error creating buffers !!\n");
-		exit(1);
-	}
-	else {
-		printf("init() - No errors yet.");
-	}
-	// Generate buffers, or else no sound will happen!
-	alGenBuffers(NUM_BUFFERS, buffer);
-	buffer[0] = alutCreateBufferFromFile("../sounds/fountain.wav");
-	buffer[1] = alutCreateBufferFromFile("../sounds/fire.wav");
-	buffer[2] = alutCreateBufferFromFile("../sounds/darth_vader.wav");
-	int errorAlut = alutGetError();
-	if (errorAlut != ALUT_ERROR_NO_ERROR){
-		printf("- Error open files with alut %d !!\n", errorAlut);
-		exit(2);
-	}
-
-	alGetError();
-	alGenSources(NUM_SOURCES, source);
-
-	if (alGetError() != AL_NO_ERROR) {
-		printf("- Error creating sources !!\n");
-		exit(2);
-	}
-	else {
-		printf("init - no errors after alGenSources\n");
-	}*/
 }
 
 void destroy() {
 	glfwDestroyWindow(window);
 	glfwTerminate();
-	// --------- IMPORTANTE ----------
-	// Eliminar los shader y buffers creados.
-
-	// Shaders Delete
 	shader.destroy();
 	shaderMulLighting.destroy();
 	shaderSkybox.destroy();
 	shaderTerrain.destroy();
-
-	// Basic objects Delete
 	skyboxSphere.destroy();
 	boxCesped.destroy();
-	boxWalls.destroy();
-	boxHighway.destroy();
-	boxLandingPad.destroy();
 	esfera1.destroy();
 	boxCollider.destroy();
 	sphereCollider.destroy();
-	rayModel.destroy();
 	boxIntro.destroy();
 	Pared1.destroy();
 	Pared2.destroy();
@@ -1092,7 +853,6 @@ void destroy() {
 	modelTuboM9.destroy();
 	modelTuboM10.destroy();
 
-
 	modelPilarH.destroy();
 	modelPilarH2.destroy();
 	modelPilarH3.destroy();
@@ -1104,7 +864,6 @@ void destroy() {
 	modelPilarH9.destroy();
 	modelPilarH10.destroy();
 	
-
 	modelPicoR.destroy();
 	modelPicoR2.destroy();
 	modelPicoR3.destroy();
@@ -1116,7 +875,6 @@ void destroy() {
 	modelPicoR9.destroy();
 	modelPicoR10.destroy();
 	
-
 	modelCactus.destroy();
 	modelCactus2.destroy();
 	modelCactus3.destroy();
@@ -1128,25 +886,15 @@ void destroy() {
 	modelCactus9.destroy();
 	modelCactus10.destroy();
 	
-
-	// Custom objects Delete
 	modelLamp1.destroy();
 	modelLamp2.destroy();
 	modelLampPost2.destroy();
 	mayowModelAnimate.destroy();
 	
-
-	// Terrains objects Delete
 	terrain.destroy();
 
-	// Textures Delete
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDeleteTextures(1, &textureCespedID);
-	glDeleteTextures(1, &textureWallID);
-	glDeleteTextures(1, &textureWall1ID);
-	glDeleteTextures(1, &textureWindowID);
-	glDeleteTextures(1, &textureHighwayID);
-	glDeleteTextures(1, &textureLandingPadID);
 	glDeleteTextures(1, &textureTerrainBID);
 	glDeleteTextures(1, &textureTerrainGID);
 	glDeleteTextures(1, &textureTerrainRID);
@@ -1158,7 +906,6 @@ void destroy() {
 	glDeleteTextures(1, &textureScreen2ID);
 	glDeleteTextures(1, &textureScreen3ID);
 
-	// Cube Maps Delete
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	glDeleteTextures(1, &skyboxTextureID);
 }
@@ -1230,7 +977,7 @@ bool processInput(bool continueApplication) {
 		else if(glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_RELEASE)
 			presionarOpcion = false;
 	}
-	//---------------------------------------
+	
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->moveFrontCamera(true, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -1243,118 +990,39 @@ bool processInput(bool continueApplication) {
 		camera->mouseMoveCamera(offsetX, offsetY, deltaTime);
 	offsetX = 0;
 	offsetY = 0;
-	//-------------------------------------------
-	/*
-	if (glfwJoystickPresent(GLFW_JOYSTICK_1) == GL_TRUE) {
-		std::cout << "Esta presente el joystick" << std::endl;
-		int axesCount, buttonCount;
-		const float * axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axesCount);
-		std::cout << "Número de ejes disponibles :=>" << axesCount << std::endl;
-		std::cout << "Left Stick X axis: " << axes[0] << std::endl;
-		std::cout << "Left Stick Y axis: " << axes[1] << std::endl;
-		std::cout << "Left Trigger/L2: " << axes[2] << std::endl;
-		std::cout << "Right Stick X axis: " << axes[3] << std::endl;
-		std::cout << "Right Stick Y axis: " << axes[4] << std::endl;
-		std::cout << "Right Trigger/R2: " << axes[5] << std::endl;
-
-		if(fabs(axes[1]) > 0.2){
-			modelMatrixMayow = glm::translate(modelMatrixMayow, glm::vec3(0, 0, -axes[1] * 0.1));
-			animationMayowIndex = 0;
-		}if(fabs(axes[0]) > 0.2){
-			modelMatrixMayow = glm::rotate(modelMatrixMayow, glm::radians(-axes[0] * 0.5f), glm::vec3(0, 1, 0));
-			animationMayowIndex = 0;
-		}
-		
-		if(fabs(axes[3]) > 0.2){
-			camera->mouseMoveCamera(axes[3], 0.0, deltaTime);
-		}if(fabs(axes[4]) > 0.2){
-			camera->mouseMoveCamera(0.0, axes[4], deltaTime);
-		}
-		
-		const unsigned char * buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
-		std::cout << "Número de botones disponibles :=>" << buttonCount << std::endl;
-		if(buttons[0] == GLFW_PRESS)
-			std::cout << "Se presiona x" << std::endl;
-
-		if(!isJump && buttons[0] == GLFW_PRESS){
-			isJump = true;
-			startTimeJump = currTime;
-			tmv = 0;
-		}
-	}
-
-	if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-		camera->mouseMoveCamera(offsetX, 0.0, deltaTime);
-	if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
-		camera->mouseMoveCamera(0.0, offsetY, deltaTime);
-
-	offsetX = 0;
-	offsetY = 0;
-	*/
-
-	/*
-	// Seleccionar modelo
-	if (enableCountSelected && glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS){
-		enableCountSelected = false;
-		modelSelected++;
-		if(modelSelected > 4)
-			modelSelected = 0;
-		if(modelSelected == 1)
-			fileName = "../animaciones/animation_dart_joints.txt";
-		if (modelSelected == 2)
-			fileName = "../animaciones/animation_dart.txt";
-		if(modelSelected == 3)
-			fileName = "../animaciones/animation_buzz_joints.txt";
-		if (modelSelected == 4)
-			fileName = "../animaciones/animation_buzz.txt";
-		std::cout << "modelSelected:" << modelSelected << std::endl;
-	}
-	else if(glfwGetKey(window, GLFW_KEY_TAB) == GLFW_RELEASE)
-		enableCountSelected = true;
-		*/
-
-	// Controles de mayow
+	
+	//Controles de mayow.
 	if (modelSelected == 0 && glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
-		modelMatrixMayow = glm::rotate(modelMatrixMayow, 0.02f, glm::vec3(0, 1, 0));
+		modelMatrixMayow = glm::rotate(modelMatrixMayow, 0.02f*5.0f, glm::vec3(0, 1, 0));
 		animationMayowIndex = 0;
 	} else if (modelSelected == 0 && glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
-		modelMatrixMayow = glm::rotate(modelMatrixMayow, -0.02f, glm::vec3(0, 1, 0));
+		modelMatrixMayow = glm::rotate(modelMatrixMayow, -0.02f*5.0f, glm::vec3(0, 1, 0));
 		animationMayowIndex = 0;
 	}
 	if (modelSelected == 0 && glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS){
-		modelMatrixMayow = glm::translate(modelMatrixMayow, glm::vec3(0.0, 0.0, 0.02));
+		modelMatrixMayow = glm::translate(modelMatrixMayow, glm::vec3(0.0, 0.0, 0.02*8.0f));
 		animationMayowIndex = 0;
 	}
 	else if (modelSelected == 0 && glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
-		modelMatrixMayow = glm::translate(modelMatrixMayow, glm::vec3(0.0, 0.0, -0.02));
+		modelMatrixMayow = glm::translate(modelMatrixMayow, glm::vec3(0.0, 0.0, -0.02*8.0f));
 		animationMayowIndex = 0;
 	}
-
-	bool keySpaceStatus = glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS;
-	if(!isJump && keySpaceStatus){
-		isJump = true;
-		startTimeJump = currTime;
-		tmv = 0;
+	
+	bool StatFly_ = glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS;
+	if(!Fly_ && StatFly_){
+		Fly_ = true;
+		Start_ = currTime;
+		T_ = 1;
 	}
-
 	glfwPollEvents();
 	return continueApplication;
 }
 
-
-
 void applicationLoop() {
 	bool psi = true;
-
 	glm::vec3 axis;
 	glm::vec3 target;
 	float angleTarget;
-
-	int state = 0;
-	float advanceCount = 0.0;
-	float rotCount = 0.0;
-	int numberAdvance = 0;
-	int maxAdvance = 0.0;
 
 	modelMatrixTuboM = glm::translate(modelMatrixTuboM, glm::vec3(0.0, 0.0, 80.0));
 	modelMatrixTuboM2 = glm::translate(modelMatrixTuboM2, glm::vec3(0.0, 20.0, 80.0));
@@ -1429,9 +1097,8 @@ void applicationLoop() {
 	modelMatrixCactus10 = glm::rotate(modelMatrixCactus10, glm::radians(90.0f), glm::vec3(0, 1, 0));
 
 	modelMatrixMayow = glm::translate(modelMatrixMayow, glm::vec3(0.0f, 0.05f, 100.0f));
-
+	
 	lastTime = TimeManager::Instance().GetTime();
-
 	textureActivaID = textureInit1ID;
 
 	while (psi) {
@@ -1445,13 +1112,8 @@ void applicationLoop() {
 		deltaTime = TimeManager::Instance().DeltaTime;
 		psi = processInput(true);
 
+		
 		std::map<std::string, bool> collisionDetection;
-
-		// Variables donde se guardan las matrices de cada articulacion por 1 frame
-		std::vector<float> matrixDartJoints;
-		std::vector<glm::mat4> matrixDart;
-		std::vector<float> matrixBuzzJoints;
-		std::vector<glm::mat4> matrixBuzz;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f),
@@ -1462,8 +1124,7 @@ void applicationLoop() {
 			axis = glm::axis(glm::quat_cast(modelMatrixMayow));
 			angleTarget = glm::angle(glm::quat_cast(modelMatrixMayow));
 			target = modelMatrixMayow[3];
-		}
-		
+		}	
 		/*
 		if(std::isnan(angleTarget))
 			angleTarget = 0.0;
@@ -1477,51 +1138,43 @@ void applicationLoop() {
 		glm::mat4 view = camera->getViewMatrix();
 		*/
 
-		// Settea la matriz de vista y projection al shader con solo color
+		//Settea la matriz de vista y projection al shader con solo color.
 		shader.setMatrix4("projection", 1, false, glm::value_ptr(projection));
 		shader.setMatrix4("view", 1, false, glm::value_ptr(view));
-
-		// Settea la matriz de vista y projection al shader con skybox
+		//Settea la matriz de vista y projection al shader con skybox.
 		shaderSkybox.setMatrix4("projection", 1, false,
 				glm::value_ptr(projection));
 		shaderSkybox.setMatrix4("view", 1, false,
 				glm::value_ptr(glm::mat4(glm::mat3(view))));
-		// Settea la matriz de vista y projection al shader con multiples luces
+		//Settea la matriz de vista y projection al shader con multiples luces.
 		shaderMulLighting.setMatrix4("projection", 1, false,
 					glm::value_ptr(projection));
 		shaderMulLighting.setMatrix4("view", 1, false,
 				glm::value_ptr(view));
-		// Settea la matriz de vista y projection al shader con multiples luces
+		//Settea la matriz de vista y projection al shader con multiples luces.
 		shaderTerrain.setMatrix4("projection", 1, false,
 				glm::value_ptr(projection));
 		shaderTerrain.setMatrix4("view", 1, false,
 				glm::value_ptr(view));
 
-		/*******************************************
-		 * Propiedades de neblina
-		 *******************************************/
+		//Neblina.
 		shaderMulLighting.setVectorFloat3("fogColor", glm::value_ptr(glm::vec3(0.5, 0.5, 0.4)));
 		shaderTerrain.setVectorFloat3("fogColor", glm::value_ptr(glm::vec3(0.5, 0.5, 0.4)));
 		shaderSkybox.setVectorFloat3("fogColor", glm::value_ptr(glm::vec3(0.5, 0.5, 0.4)));
 
-		/*******************************************
-		 * Propiedades Luz direccional
-		 *******************************************/
+		//Propiedades Luz direccional.
 		shaderMulLighting.setVectorFloat3("viewPos", glm::value_ptr(camera->getPosition()));
 		shaderMulLighting.setVectorFloat3("directionalLight.light.ambient", glm::value_ptr(glm::vec3(0.3, 0.3, 0.3)));
 		shaderMulLighting.setVectorFloat3("directionalLight.light.diffuse", glm::value_ptr(glm::vec3(0.7, 0.7, 0.7)));
 		shaderMulLighting.setVectorFloat3("directionalLight.light.specular", glm::value_ptr(glm::vec3(0.9, 0.9, 0.9)));
 		shaderMulLighting.setVectorFloat3("directionalLight.direction", glm::value_ptr(glm::vec3(-1.0, 0.0, 0.0)));
-
 		shaderTerrain.setVectorFloat3("viewPos", glm::value_ptr(camera->getPosition()));
 		shaderTerrain.setVectorFloat3("directionalLight.light.ambient", glm::value_ptr(glm::vec3(0.4, 0.4, 0.4)));
 		shaderTerrain.setVectorFloat3("directionalLight.light.diffuse", glm::value_ptr(glm::vec3(0.7, 0.7, 0.7)));
 		shaderTerrain.setVectorFloat3("directionalLight.light.specular", glm::value_ptr(glm::vec3(0.9, 0.9, 0.9)));
 		shaderTerrain.setVectorFloat3("directionalLight.direction", glm::value_ptr(glm::vec3(-1.0, 0.0, 0.0)));
 
-		/*******************************************
-		 * Propiedades SpotLights
-		 *******************************************/
+		//Propiedades spotLights.
 		shaderMulLighting.setInt("spotLightCount", 1);
 		shaderTerrain.setInt("spotLightCount", 1);
 		glm::vec3 spotPosition = glm::vec3(modelMatrixMayow * glm::vec4(0.0, 0.2, 1.75, 1.0));
@@ -1546,9 +1199,7 @@ void applicationLoop() {
 		shaderTerrain.setFloat("spotLights[0].cutOff", cos(glm::radians(12.5f)));
 		shaderTerrain.setFloat("spotLights[0].outerCutOff", cos(glm::radians(15.0f)));
 
-		/*******************************************
-		 * Propiedades PointLights
-		 *******************************************/
+		//Propiedades pointLights.
 		shaderMulLighting.setInt("pointLightCount", lamp1Position.size() + lamp2Position.size());
 		shaderTerrain.setInt("pointLightCount", lamp1Position.size() + lamp2Position.size());
 		for(int i = 0; i < lamp1Position.size(); i++){
@@ -1596,7 +1247,7 @@ void applicationLoop() {
 			shaderTerrain.setFloat("pointLights[" + std::to_string(lamp1Position.size() + i) + "].quadratic", 0.02);
 		}
 
-		/************Render de imagen de frente**************/
+		//Render de imagen de frente.
 		if(!iniciaPartida){
 			shaderTexture.setMatrix4("projection", 1, false, glm::value_ptr(glm::mat4(1.0)));
 			shaderTexture.setMatrix4("view", 1, false, glm::value_ptr(glm::mat4(1.0)));
@@ -1608,10 +1259,7 @@ void applicationLoop() {
 			continue;
 		}
 
-		/*******************************************
-		 * Terrain Cesped
-		 *******************************************/
-		// Se activa la textura del agua
+		//Terrain Cesped.
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureCespedID);
 		shaderTerrain.setInt("backgroundTexture", 0);
@@ -1633,262 +1281,257 @@ void applicationLoop() {
 		shaderTerrain.setVectorFloat2("scaleUV", glm::value_ptr(glm::vec2(0, 0)));
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		/*******************************************
-		 * Custom objects obj
-		 *******************************************/
-		//Paredes
+		//Custom objects obj.
+		//Paredes.
 		glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texturePraderaID);
-        shaderMulLighting.setInt("texture1", 0);
-        //Pared1
+       	 	glBindTexture(GL_TEXTURE_2D, texturePraderaID);
+        	shaderMulLighting.setInt("texture1", 0);
+        	//Pared1.
 		Pared1.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared1.setPosition(glm::vec3(-20.0f, 10.0f, 75.0f));
 		Pared1.render();
-		//Pared2
+		//Pared2.
 		Pared2.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared2.setPosition(glm::vec3(-20.0f, 10.0f, 25.0f));
 		Pared2.render();
-		//Pared3
+		//Pared3.
 		Pared3.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared3.setPosition(glm::vec3(20.0f, 10.0f, 75.0f));
 		Pared3.render();
-		//Pared4
+		//Pared4.
 		Pared4.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared4.setPosition(glm::vec3(20.0f, 10.0f, 25.0f));
 		Pared4.render();
 
 		glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureMontañasHeladasID);
-        shaderMulLighting.setInt("texture1", 0);
-		//Pared5
+        	glBindTexture(GL_TEXTURE_2D, textureMontañasHeladasID);
+        	shaderMulLighting.setInt("texture1", 0);
+		//Pared5.
 		Pared5.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared5.setPosition(glm::vec3(-20.0f, 10.0f, -25.0f));
 		Pared5.render();
-		//Pared6
+		//Pared6.
 		Pared6.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared6.setPosition(glm::vec3(-20.0f, 10.0f, -75.0f));
 		Pared6.render();
-		//Pared7
+		//Pared7.
 		Pared7.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared7.setPosition(glm::vec3(20.0f, 10.0f, -25.0f));
 		Pared7.render();
-		//Pared8
+		//Pared8.
 		Pared8.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared8.setPosition(glm::vec3(20.0f, 10.0f, -75.0f));
 		Pared8.render();
 
 		glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureMontañaRocosaID);
-        shaderMulLighting.setInt("texture1", 0);
-		//Pared9
+        	glBindTexture(GL_TEXTURE_2D, textureMontañaRocosaID);
+        	shaderMulLighting.setInt("texture1", 0);
+		//Pared9.
 		Pared9.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared9.setPosition(glm::vec3(-20.0f, 10.0f, -125.0f));
-		Pared9
-		.render();
-		//Pared10
+		Pared9.render();
+		//Pared10.
 		Pared10.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared10.setPosition(glm::vec3(-20.0f, 10.0f, -175.0f));
 		Pared10.render();
-		//Pared11
+		//Pared11.
 		Pared11.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared11.setPosition(glm::vec3(20.0f, 10.0f, -125.0f));
 		Pared11.render();
-		//Pared12
+		//Pared12.
 		Pared12.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared12.setPosition(glm::vec3(20.0f, 10.0f, -175.0f));
 		Pared12.render();
 
 		glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureDesiertoID);
-        shaderMulLighting.setInt("texture1", 0);
-		//Pared13
+        	glBindTexture(GL_TEXTURE_2D, textureDesiertoID);
+        	shaderMulLighting.setInt("texture1", 0);
+		//Pared13.
 		Pared13.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared13.setPosition(glm::vec3(-20.0f, 10.0f, -225.0f));
 		Pared13.render();
-		//Pared14
+		//Pared14.
 		Pared14.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared14.setPosition(glm::vec3(-20.0f, 10.0f, -275.0f));
 		Pared14.render();
-		//Pared15
+		//Pared15.
 		Pared15.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared15.setPosition(glm::vec3(20.0f, 10.0f, -225.0f));
 		Pared15.render();
-		//Pared16
+		//Pared16.
 		Pared16.setScale(glm::vec3(0.2, 20.0, 50.0));
 		Pared16.setPosition(glm::vec3(20.0f, 10.0f, -275.0f));
 		Pared16.render();
 		
-		//------------------Obstaculos------Tubos------------------------------
-		//Tubo1
+		//Obstaculos Tubos.
+		//Tubo1.
 		modelTuboM.setScale(glm::vec3(0.7f, 0.45f, 0.7f));
 		modelTuboM.render(modelMatrixTuboM);
 		glActiveTexture(GL_TEXTURE0);
-		//Tubo2 arriba
+		//Tubo2 arriba.
 		modelTuboM.setScale(glm::vec3(0.7f, 0.60f, 0.7f));
 		modelTuboM.render(modelMatrixTuboM2);
 		glActiveTexture(GL_TEXTURE0);
-		
-		//Tubo3
+		//Tubo3.
 		modelTuboM.setScale(glm::vec3(0.7f, 0.65f, 0.7f));
 		modelTuboM.render(modelMatrixTuboM3);
 		glActiveTexture(GL_TEXTURE0);
-		//Tubo4 arriba
+		//Tubo4 arriba.
 		modelTuboM.setScale(glm::vec3(0.7f, 0.40f, 0.7f));
 		modelTuboM.render(modelMatrixTuboM4);
 		glActiveTexture(GL_TEXTURE0);
-		//Tubo5
+		//Tubo5.
 		modelTuboM.setScale(glm::vec3(0.7f, 0.35f, 0.7f));
 		modelTuboM.render(modelMatrixTuboM5);
 		glActiveTexture(GL_TEXTURE0);
-		//Tubo6 arriba
+		//Tubo6 arriba.
 		modelTuboM.setScale(glm::vec3(0.7f, 0.70f, 0.7f));
 		modelTuboM.render(modelMatrixTuboM6);
 		glActiveTexture(GL_TEXTURE0);
-		//Tubo7
+		//Tubo7.
 		modelTuboM.setScale(glm::vec3(0.7f, 0.65f, 0.7f));
 		modelTuboM.render(modelMatrixTuboM7);
 		glActiveTexture(GL_TEXTURE0);
-		//Tubo8 arriba
+		//Tubo8 arriba.
 		modelTuboM.setScale(glm::vec3(0.7f, 0.35f, 0.7f));
 		modelTuboM.render(modelMatrixTuboM8);
 		glActiveTexture(GL_TEXTURE0);
-		//Tubo9
+		//Tubo9.
 		modelTuboM.setScale(glm::vec3(0.7f, 0.45f, 0.7f));
 		modelTuboM.render(modelMatrixTuboM9);
 		glActiveTexture(GL_TEXTURE0);
-		//Tubo10 arriba
+		//Tubo10 arriba.
 		modelTuboM.setScale(glm::vec3(0.7f, 0.60f, 0.7f));
 		modelTuboM.render(modelMatrixTuboM10);
 		glActiveTexture(GL_TEXTURE0);
 		
-		//------------------Obstaculos------Pilares de hielo------------------------------
-		//Pilar 1
+		//Obstaculos Pilares de hielo.
+		//Pilar 1.
 		modelPilarH.setScale(glm::vec3(0.7f, 1.0f, 0.7f));
 		modelPilarH.render(modelMatrixPilarH);
 		glActiveTexture(GL_TEXTURE0);
-		//Pilar 2 arriba
+		//Pilar 2 arriba.
 		modelPilarH2.setScale(glm::vec3(0.7f, 1.5f, 0.7f));
 		modelPilarH2.render(modelMatrixPilarH2);
 		glActiveTexture(GL_TEXTURE0);
-		//Pilar 3
+		//Pilar 3.
 		modelPilarH3.setScale(glm::vec3(0.7f, 2.0f, 0.7f));
 		modelPilarH3.render(modelMatrixPilarH3);
 		glActiveTexture(GL_TEXTURE0);
-		//Pilar 4 arriba
+		//Pilar 4 arriba.
 		modelPilarH4.setScale(glm::vec3(0.7f, 0.5f, 0.7f));
 		modelPilarH4.render(modelMatrixPilarH4);
 		glActiveTexture(GL_TEXTURE0);
-		//Pilar 5
+		//Pilar 5.
 		modelPilarH5.setScale(glm::vec3(0.7f, 0.5f, 0.7f));
 		modelPilarH5.render(modelMatrixPilarH5);
 		glActiveTexture(GL_TEXTURE0);
-		//Pilar 6 arriba
+		//Pilar 6 arriba.
 		modelPilarH6.setScale(glm::vec3(0.7f, 2.0f, 0.7f));
 		modelPilarH6.render(modelMatrixPilarH6);
 		glActiveTexture(GL_TEXTURE0);
-		//Pilar 7
+		//Pilar 7.
 		modelPilarH7.setScale(glm::vec3(0.7f, 1.5f, 0.7f));
 		modelPilarH7.render(modelMatrixPilarH7);
 		glActiveTexture(GL_TEXTURE0);
-		//Pilar 8 arriba
+		//Pilar 8 arriba.
 		modelPilarH8.setScale(glm::vec3(0.7f, 1.0f, 0.7f));
 		modelPilarH8.render(modelMatrixPilarH8);
 		glActiveTexture(GL_TEXTURE0);
-		//Pilar9 
+		//Pilar9.
 		modelPilarH9.setScale(glm::vec3(0.7f, 0.5f, 0.7f));
 		modelPilarH9.render(modelMatrixPilarH9);
 		glActiveTexture(GL_TEXTURE0);
-		//Pilar 10 arriba
+		//Pilar 10 arriba.
 		modelPilarH10.setScale(glm::vec3(0.7f, 2.0f, 0.7f));
 		modelPilarH10.render(modelMatrixPilarH10);
 		glActiveTexture(GL_TEXTURE0);
 
-		//------------------Obstaculos------Picos de Roca------------------------------
-		//Pico 1
+		//Obstaculos picos de roca.
+		//Pico 1.
 		modelPicoR.setScale(glm::vec3(0.7f, 0.6f, 0.7f));
 		modelPicoR.render(modelMatrixPicoR);
 		glActiveTexture(GL_TEXTURE0);
-		//Pico 2 arriba
+		//Pico 2 arriba.
 		modelPicoR2.setScale(glm::vec3(0.7f, 1.0f, 0.7f));
 		modelPicoR2.render(modelMatrixPicoR2);
 		glActiveTexture(GL_TEXTURE0);
-		//Pico 3 
+		//Pico 3.
 		modelPicoR3.setScale(glm::vec3(0.7f, 1.0f, 0.5f));
 		modelPicoR3.render(modelMatrixPicoR3);
 		glActiveTexture(GL_TEXTURE0);
-		//Pico 4 arriba
+		//Pico 4 arriba.
 		modelPicoR4.setScale(glm::vec3(0.7f, 0.6f, 0.7f));
 		modelPicoR4.render(modelMatrixPicoR4);
 		glActiveTexture(GL_TEXTURE0);
-		//Pico 5
+		//Pico 5.
 		modelPicoR5.setScale(glm::vec3(0.7f, 0.2f, 0.7f));
 		modelPicoR5.render(modelMatrixPicoR5);
 		glActiveTexture(GL_TEXTURE0);
-		//Pico 6 arriba
+		//Pico 6 arriba.
 		modelPicoR6.setScale(glm::vec3(0.7f, 1.4f, 0.7f));
 		modelPicoR6.render(modelMatrixPicoR6);
 		glActiveTexture(GL_TEXTURE0);
-		//Pico 7
+		//Pico 7.
 		modelPicoR7.setScale(glm::vec3(0.7f, 1.5f, 0.7f));
 		modelPicoR7.render(modelMatrixPicoR7);
 		glActiveTexture(GL_TEXTURE0);
-		//Pico 8 arriba
+		//Pico 8 arriba.
 		modelPicoR8.setScale(glm::vec3(0.7f, 0.1f, 0.7f));
 		modelPicoR8.render(modelMatrixPicoR8);
 		glActiveTexture(GL_TEXTURE0);
-		//Pico 9
+		//Pico 9.
 		modelPicoR9.setScale(glm::vec3(0.7f, 0.7f, 0.7f));
 		modelPicoR9.render(modelMatrixPicoR9);
 		glActiveTexture(GL_TEXTURE0);
-		//Pico 10 arriba
+		//Pico 10 arriba.
 		modelPicoR10.setScale(glm::vec3(0.7f, 1.1f, 0.7f));
 		modelPicoR10.render(modelMatrixPicoR10);
 		glActiveTexture(GL_TEXTURE0);
 
-		//------------------Obstaculos------Cactus------------------------------
-		//Cactus 1
+		//Obstaculos cactus.
+		//Cactus 1.
 		modelCactus.setScale(glm::vec3(1.2f, 1.5, 1.2f));
 		modelCactus.render(modelMatrixCactus);
 		glActiveTexture(GL_TEXTURE0);
-		//Cactus 2 arriba
+		//Cactus 2 arriba.
 		modelCactus2.setScale(glm::vec3(1.2f, 1.1f, 1.2f));
 		modelCactus2.render(modelMatrixCactus2);
 		glActiveTexture(GL_TEXTURE0);
-		//Cactus 3 
+		//Cactus 3.
 		modelCactus3.setScale(glm::vec3(1.2f, 2.0f, 1.2f));
 		modelCactus3.render(modelMatrixCactus3);
 		glActiveTexture(GL_TEXTURE0);
-		//Cactus 4 arriba
+		//Cactus 4 arriba.
 		modelCactus4.setScale(glm::vec3(1.2f, 0.6f, 1.2f));
 		modelCactus4.render(modelMatrixCactus4);
 		glActiveTexture(GL_TEXTURE0);
-		//Cactus 5
+		//Cactus 5.
 		modelCactus5.setScale(glm::vec3(1.2f, 0.6f, 1.2f));
 		modelCactus5.render(modelMatrixCactus5);
 		glActiveTexture(GL_TEXTURE0);
-		//Cactus 6 arriba
+		//Cactus 6 arriba.
 		modelCactus6.setScale(glm::vec3(1.2f, 2.0f, 1.2f));
 		modelCactus6.render(modelMatrixCactus6);
 		glActiveTexture(GL_TEXTURE0);
-		//Cactus 7
+		//Cactus 7.
 		modelCactus7.setScale(glm::vec3(1.2f, 1.5f, 1.2f));
 		modelCactus7.render(modelMatrixCactus7);
 		glActiveTexture(GL_TEXTURE0);
-		//Cactus 8 arriba
+		//Cactus 8 arriba.
 		modelCactus8.setScale(glm::vec3(1.2f, 1.0f, 1.2f));
 		modelCactus8.render(modelMatrixCactus8);
 		glActiveTexture(GL_TEXTURE0);
-		//Cactus 9
+		//Cactus 9.
 		modelCactus9.setScale(glm::vec3(1.2f, 1.5f, 1.2f));
 		modelCactus9.render(modelMatrixCactus9);
 		glActiveTexture(GL_TEXTURE0);
-		//Cactus 10 arriba
+		//Cactus 10 arriba.
 		modelCactus10.setScale(glm::vec3(1.2f, 1.2f, 1.2f));
 		modelCactus10.render(modelMatrixCactus10);
 		glActiveTexture(GL_TEXTURE0);
 		
-
-		// Render lamp
+		//Render lamp.
 		for(int i = 0; i < lamp1Position.size(); i++){
 			lamp1Position[i].y = terrain.getHeightTerrain(lamp1Position[i].x, lamp1Position[i].z);
 			modelLamp1.setPosition(lamp1Position[i]);
@@ -1909,9 +1552,7 @@ void applicationLoop() {
 		}
 
 		
-		/*****************************************
-		 * Objetos animados por huesos
-		 * **************************************/
+		//Objetos animados por huesos.
 		glm::vec3 ejey = glm::normalize(terrain.getNormalTerrain(modelMatrixMayow[3][0], modelMatrixMayow[3][2]));
 		glm::vec3 ejex = glm::vec3(modelMatrixMayow[0]);
 		glm::vec3 ejez = glm::normalize(glm::cross(ejex, ejey));
@@ -1919,8 +1560,8 @@ void applicationLoop() {
 		modelMatrixMayow[0] = glm::vec4(ejex, 0.0);
 		modelMatrixMayow[1] = glm::vec4(ejey, 0.0);
 		modelMatrixMayow[2] = glm::vec4(ejez, 0.0);
-		modelMatrixMayow[3][1] = -GRAVITY * tmv * tmv + 3.5 * tmv + terrain.getHeightTerrain(modelMatrixMayow[3][0], modelMatrixMayow[3][2]);
-		tmv = currTime - startTimeJump;
+		modelMatrixMayow[3][1] = -FlyG_ * T_ * T_ + 3.5 * T_ + terrain.getHeightTerrain(modelMatrixMayow[3][0], modelMatrixMayow[3][2]);
+		T_ = currTime - Start_;
 		if(modelMatrixMayow[3][1] < terrain.getHeightTerrain(modelMatrixMayow[3][0], modelMatrixMayow[3][2])){
 			isJump = false;
 			modelMatrixMayow[3][1] = terrain.getHeightTerrain(modelMatrixMayow[3][0], modelMatrixMayow[3][2]);
@@ -1932,12 +1573,10 @@ void applicationLoop() {
 		animationMayowIndex = 1;
 
 
-		/*******************************************
-		 * Skybox
-		 *******************************************/
+		//Skybox.
 		GLint oldCullFaceMode;
 		GLint oldDepthFuncMode;
-		// deshabilita el modo del recorte de caras ocultas para ver las esfera desde adentro
+		//Deshabilita el modo del recorte de caras ocultas para ver las esfera desde adentro.
 		glGetIntegerv(GL_CULL_FACE_MODE, &oldCullFaceMode);
 		glGetIntegerv(GL_DEPTH_FUNC, &oldDepthFuncMode);
 		shaderSkybox.setFloat("skybox", 0);
@@ -1948,13 +1587,8 @@ void applicationLoop() {
 		glCullFace(oldCullFaceMode);
 		glDepthFunc(oldDepthFuncMode);
 
-		/*******************************************
-		 * Creacion de colliders
-		 * IMPORTANT do this before interpolations
-		 *******************************************/
-		
-
-		// Lamps1 colliders
+		//Colliders.
+		//Lamps1 colliders.
 		for (int i = 0; i < lamp1Position.size(); i++){
 			AbstractModel::OBB lampCollider;
 			glm::mat4 modelMatrixColliderLamp = glm::mat4(1.0);
@@ -1971,7 +1605,7 @@ void applicationLoop() {
 			std::get<0>(collidersOBB.find("lamp1-" + std::to_string(i))->second) = lampCollider;
 		}
 
-		// Lamps2 colliders
+		//Lamps2 colliders.
 		for (int i = 0; i < lamp2Position.size(); i++){
 			AbstractModel::OBB lampCollider;
 			glm::mat4 modelMatrixColliderLamp = glm::mat4(1.0);
@@ -1979,7 +1613,7 @@ void applicationLoop() {
 			modelMatrixColliderLamp = glm::rotate(modelMatrixColliderLamp, glm::radians(lamp2Orientation[i]),
 					glm::vec3(0, 1, 0));
 			addOrUpdateColliders(collidersOBB, "lamp2-" + std::to_string(i), lampCollider, modelMatrixColliderLamp);
-			// Set the orientation of collider before doing the scale
+			//Set the orientation of collider before doing the scale.
 			lampCollider.u = glm::quat_cast(modelMatrixColliderLamp);
 			modelMatrixColliderLamp = glm::scale(modelMatrixColliderLamp, glm::vec3(1.0, 1.0, 1.0));
 			modelMatrixColliderLamp = glm::translate(modelMatrixColliderLamp, modelLampPost2.getObb().c);
@@ -1988,12 +1622,12 @@ void applicationLoop() {
 			std::get<0>(collidersOBB.find("lamp2-" + std::to_string(i))->second) = lampCollider;
 		}
 
-		// Collider de mayow
+		//Collider de mayow.
 		AbstractModel::OBB mayowCollider;
 		glm::mat4 modelmatrixColliderMayow = glm::mat4(modelMatrixMayow);
 		modelmatrixColliderMayow = glm::rotate(modelmatrixColliderMayow,
 				glm::radians(-90.0f), glm::vec3(1, 0, 0));
-		// Set the orientation of collider before doing the scale
+		//Set the orientation of collider before doing the scale.
 		mayowCollider.u = glm::quat_cast(modelmatrixColliderMayow);
 		modelmatrixColliderMayow = glm::scale(modelmatrixColliderMayow, glm::vec3(0.021, 0.021, 0.021));
 		modelmatrixColliderMayow = glm::translate(modelmatrixColliderMayow,
@@ -2004,10 +1638,7 @@ void applicationLoop() {
 		mayowCollider.c = glm::vec3(modelmatrixColliderMayow[3]);
 		addOrUpdateColliders(collidersOBB, "mayow", mayowCollider, modelMatrixMayow);
 
-		/*******************************************
-		 * Render de colliders
-		 *******************************************/
-		/*
+		/*//Render de colliders.
 		for (std::map<std::string, std::tuple<AbstractModel::OBB, glm::mat4, glm::mat4> >::iterator it =
 				collidersOBB.begin(); it != collidersOBB.end(); it++) {
 			glm::mat4 matrixCollider = glm::mat4(1.0);
@@ -2029,29 +1660,6 @@ void applicationLoop() {
 			sphereCollider.render(matrixCollider);
 		}
 		*/
-		/*
-		glm::mat4 modelMatrixRayMay = glm::mat4(modelMatrixMayow);
-		modelMatrixRayMay = glm::translate(modelMatrixRayMay, glm::vec3(0, 1, 0));
-		float maxDistanceRay = 10.0;
-		glm::vec3 rayDirection = modelMatrixRayMay[2];
-		glm::vec3 ori = modelMatrixRayMay[3];
-		glm::vec3 rmd = ori + rayDirection * (maxDistanceRay / 2.0f);
-		glm::vec3 targetRay = ori + rayDirection * maxDistanceRay;
-		modelMatrixRayMay[3] = glm::vec4(rmd, 1.0);
-		modelMatrixRayMay = glm::rotate(modelMatrixRayMay, glm::radians(90.0f), 
-			glm::vec3(1, 0, 0));
-		modelMatrixRayMay = glm::scale(modelMatrixRayMay, 
-			glm::vec3(0.05, maxDistanceRay, 0.05));
-		rayModel.render(modelMatrixRayMay);
-		*/
-		/**********
-		 * Update the position with alpha objects
-		 */
-		
-
-		/**********
-		 * Sorter with alpha objects
-		 */
 		std::map<float, std::pair<std::string, glm::vec3>> blendingSorted;
 		std::map<std::string, glm::vec3>::iterator itblend;
 		for(itblend = blendingUnsorted.begin(); itblend != blendingUnsorted.end(); itblend++){
@@ -2059,17 +1667,14 @@ void applicationLoop() {
 			blendingSorted[distanceFromView] = std::make_pair(itblend->first, itblend->second);
 		}
 
-		/**********
-		 * Render de las transparencias
-		 */
+		//Render de las transparencias.
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glDisable(GL_CULL_FACE);
-		
 		glEnable(GL_CULL_FACE);
 		glDisable(GL_BLEND);
 
-		/************Render de imagen de frente**************/
+		//Render de imagen de frente.
 		shaderTexture.setMatrix4("projection", 1, false, glm::value_ptr(glm::mat4(1.0)));
 		shaderTexture.setMatrix4("view", 1, false, glm::value_ptr(glm::mat4(1.0)));
 		glActiveTexture(GL_TEXTURE0);
@@ -2078,10 +1683,9 @@ void applicationLoop() {
 		glEnable(GL_BLEND);
 		boxIntro.render();
 		glDisable(GL_BLEND);
-
 		modelText->render("Texto en OpenGL", -1, 0);
 
-		/*********************Prueba de colisiones****************************/
+		//Prueba de colisiones.
 		for (std::map<std::string,
 			std::tuple<AbstractModel::SBB, glm::mat4, glm::mat4>>::iterator it =
 			collidersSBB.begin(); it != collidersSBB.end(); it++) {
@@ -2156,18 +1760,6 @@ void applicationLoop() {
 				}
 			}
 		}
-		/*
-		std::map<std::string, std::tuple<AbstractModel::SBB, glm::mat4, glm::mat4>>::
-			iterator itSBB;
-		for (itSBB = collidersSBB.begin(); itSBB != collidersSBB.end(); itSBB++) {
-			float tRint;
-			if (raySphereIntersect(ori, targetRay, rayDirection,
-				std::get<0>(itSBB->second), tRint)) {
-				std::cout << "Collision del rayo con el modelo " << itSBB->first 
-				<< std::endl;
-			}
-		}
-		*/
 		glfwSwapBuffers(window);
 	}
 }
