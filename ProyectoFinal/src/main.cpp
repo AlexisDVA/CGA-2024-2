@@ -225,8 +225,8 @@ double currTime, lastTime;
 
 //Fly.
 bool Fly_ = false;
-float FlyG_ = 2.90;
-double T_ = 1;
+float FlyG_ = 4.90;
+double T_ = 0;
 double Start_ = 0;
 
 //Colliders.
