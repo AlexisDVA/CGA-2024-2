@@ -196,7 +196,7 @@ glm::mat4 modelMatrixCactus10 = glm::mat4(1.0f);
 
 glm::mat4 modelMatrixMayow = glm::mat4(1.0f);
 
-int animationMayowIndex = 1;
+int animationMayowIndex = 0;
 int modelSelected = 0;
 
 //Lamps position.
@@ -443,7 +443,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelLampPost2.setShader(&shaderMulLighting);
 
 	//Mayow.
-	mayowModelAnimate.loadModel("../models/mayow/personaje2.fbx");
+	mayowModelAnimate.loadModel("../models/Modelos Videojuego/Bird_.fbx");
 	mayowModelAnimate.setShader(&shaderMulLighting);
 
 	//Terreno.
@@ -1012,7 +1012,7 @@ bool processInput(bool continueApplication) {
 	if(!Fly_ && StatFly_){
 		Fly_ = true;
 		Start_ = currTime;
-		T_ = 1;
+		T_ = 0;
 	}
 	glfwPollEvents();
 	return continueApplication;
@@ -1570,7 +1570,7 @@ void applicationLoop() {
 		modelMatrixMayowBody = glm::scale(modelMatrixMayowBody, glm::vec3(0.021f));
 		mayowModelAnimate.setAnimationIndex(animationMayowIndex);
 		mayowModelAnimate.render(modelMatrixMayowBody);
-		animationMayowIndex = 1;
+		animationMayowIndex = 0;
 
 
 		//Skybox.
