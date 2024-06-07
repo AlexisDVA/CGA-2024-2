@@ -1563,7 +1563,7 @@ void applicationLoop() {
 		modelMatrixMayow[3][1] = -FlyG_ * T_ * T_ + 3.5 * T_ + terrain.getHeightTerrain(modelMatrixMayow[3][0], modelMatrixMayow[3][2]);
 		T_ = currTime - Start_;
 		if(modelMatrixMayow[3][1] < terrain.getHeightTerrain(modelMatrixMayow[3][0], modelMatrixMayow[3][2])){
-			isJump = false;
+			Fly_ = false;
 			modelMatrixMayow[3][1] = terrain.getHeightTerrain(modelMatrixMayow[3][0], modelMatrixMayow[3][2]);
 		}
 		glm::mat4 modelMatrixMayowBody = glm::mat4(modelMatrixMayow);
