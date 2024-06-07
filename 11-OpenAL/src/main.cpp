@@ -106,16 +106,7 @@ Model modelTuboM7;
 Model modelTuboM8;
 Model modelTuboM9;
 Model modelTuboM10;
-Model modelTuboM11;
-Model modelTuboM12;
-Model modelTuboM13;
-Model modelTuboM14;
-Model modelTuboM15;
-Model modelTuboM16;
-Model modelTuboM17;
-Model modelTuboM18;
-Model modelTuboM19;
-Model modelTuboM20;
+
 
 Model modelPilarH;
 Model modelPilarH2;
@@ -127,16 +118,6 @@ Model modelPilarH7;
 Model modelPilarH8;
 Model modelPilarH9;
 Model modelPilarH10;
-Model modelPilarH11;
-Model modelPilarH12;
-Model modelPilarH13;
-Model modelPilarH14;
-Model modelPilarH15;
-Model modelPilarH16;
-Model modelPilarH17;
-Model modelPilarH18;
-Model modelPilarH19;
-Model modelPilarH20;
 
 Model modelPicoR;
 Model modelPicoR2;
@@ -148,16 +129,6 @@ Model modelPicoR7;
 Model modelPicoR8;
 Model modelPicoR9;
 Model modelPicoR10;
-Model modelPicoR11;
-Model modelPicoR12;
-Model modelPicoR13;
-Model modelPicoR14;
-Model modelPicoR15;
-Model modelPicoR16;
-Model modelPicoR17;
-Model modelPicoR18;
-Model modelPicoR19;
-Model modelPicoR20;
 
 Model modelCactus;
 Model modelCactus2;
@@ -169,16 +140,7 @@ Model modelCactus7;
 Model modelCactus8;
 Model modelCactus9;
 Model modelCactus10;
-Model modelCactus11;
-Model modelCactus12;
-Model modelCactus13;
-Model modelCactus14;
-Model modelCactus15;
-Model modelCactus16;
-Model modelCactus17;
-Model modelCactus18;
-Model modelCactus19;
-Model modelCactus20;
+
 
 // Lamps
 Model modelLamp1;
@@ -234,16 +196,6 @@ glm::mat4 modelMatrixTuboM7 = glm::mat4(1.0f);
 glm::mat4 modelMatrixTuboM8 = glm::mat4(1.0f);
 glm::mat4 modelMatrixTuboM9 = glm::mat4(1.0f);
 glm::mat4 modelMatrixTuboM10 = glm::mat4(1.0f);
-glm::mat4 modelMatrixTuboM11 = glm::mat4(1.0f);
-glm::mat4 modelMatrixTuboM12 = glm::mat4(1.0f);
-glm::mat4 modelMatrixTuboM13 = glm::mat4(1.0f);
-glm::mat4 modelMatrixTuboM14 = glm::mat4(1.0f);
-glm::mat4 modelMatrixTuboM15 = glm::mat4(1.0f);
-glm::mat4 modelMatrixTuboM16 = glm::mat4(1.0f);
-glm::mat4 modelMatrixTuboM17 = glm::mat4(1.0f);
-glm::mat4 modelMatrixTuboM18 = glm::mat4(1.0f);
-glm::mat4 modelMatrixTuboM19 = glm::mat4(1.0f);
-glm::mat4 modelMatrixTuboM20 = glm::mat4(1.0f);
 
 glm::mat4 modelMatrixPilarH = glm::mat4(1.0f);
 glm::mat4 modelMatrixPilarH2 = glm::mat4(1.0f);
@@ -255,16 +207,29 @@ glm::mat4 modelMatrixPilarH7 = glm::mat4(1.0f);
 glm::mat4 modelMatrixPilarH8 = glm::mat4(1.0f);
 glm::mat4 modelMatrixPilarH9 = glm::mat4(1.0f);
 glm::mat4 modelMatrixPilarH10 = glm::mat4(1.0f);
-glm::mat4 modelMatrixPilarH11 = glm::mat4(1.0f);
-glm::mat4 modelMatrixPilarH12 = glm::mat4(1.0f);
-glm::mat4 modelMatrixPilarH13 = glm::mat4(1.0f);
-glm::mat4 modelMatrixPilarH14 = glm::mat4(1.0f);
-glm::mat4 modelMatrixPilarH15 = glm::mat4(1.0f);
-glm::mat4 modelMatrixPilarH16 = glm::mat4(1.0f);
-glm::mat4 modelMatrixPilarH17 = glm::mat4(1.0f);
-glm::mat4 modelMatrixPilarH18 = glm::mat4(1.0f);
-glm::mat4 modelMatrixPilarH19 = glm::mat4(1.0f);
-glm::mat4 modelMatrixPilarH20 = glm::mat4(1.0f);
+
+
+glm::mat4 modelMatrixPicoR = glm::mat4(1.0f);
+glm::mat4 modelMatrixPicoR2 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPicoR3 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPicoR4 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPicoR5 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPicoR6 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPicoR7 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPicoR8 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPicoR9 = glm::mat4(1.0f);
+glm::mat4 modelMatrixPicoR10 = glm::mat4(1.0f);
+
+glm::mat4 modelMatrixCactus = glm::mat4(1.0f);
+glm::mat4 modelMatrixCactus2 = glm::mat4(1.0f);
+glm::mat4 modelMatrixCactus3 = glm::mat4(1.0f);
+glm::mat4 modelMatrixCactus4 = glm::mat4(1.0f);
+glm::mat4 modelMatrixCactus5 = glm::mat4(1.0f);
+glm::mat4 modelMatrixCactus6 = glm::mat4(1.0f);
+glm::mat4 modelMatrixCactus7 = glm::mat4(1.0f);
+glm::mat4 modelMatrixCactus8 = glm::mat4(1.0f);
+glm::mat4 modelMatrixCactus9 = glm::mat4(1.0f);
+glm::mat4 modelMatrixCactus10 = glm::mat4(1.0f);
 
 glm::mat4 modelMatrixMayow = glm::mat4(1.0f);
 
@@ -467,6 +432,89 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelTuboM.setShader(&shaderMulLighting);
 	modelTuboM2.loadModel("../models/Modelos Videojuego/TuboM.obj");
 	modelTuboM2.setShader(&shaderMulLighting);
+	modelTuboM3.loadModel("../models/Modelos Videojuego/TuboM.obj");
+	modelTuboM3.setShader(&shaderMulLighting);
+	modelTuboM4.loadModel("../models/Modelos Videojuego/TuboM.obj");
+	modelTuboM4.setShader(&shaderMulLighting);
+	modelTuboM5.loadModel("../models/Modelos Videojuego/TuboM.obj");
+	modelTuboM5.setShader(&shaderMulLighting);
+	modelTuboM6.loadModel("../models/Modelos Videojuego/TuboM.obj");
+	modelTuboM6.setShader(&shaderMulLighting);
+	modelTuboM7.loadModel("../models/Modelos Videojuego/TuboM.obj");
+	modelTuboM7.setShader(&shaderMulLighting);
+	modelTuboM8.loadModel("../models/Modelos Videojuego/TuboM.obj");
+	modelTuboM8.setShader(&shaderMulLighting);
+	modelTuboM9.loadModel("../models/Modelos Videojuego/TuboM.obj");
+	modelTuboM9.setShader(&shaderMulLighting);
+	modelTuboM10.loadModel("../models/Modelos Videojuego/TuboM.obj");
+	modelTuboM10.setShader(&shaderMulLighting);
+	
+
+	modelPilarH.loadModel("../models/Modelos Videojuego/PilarHielo.obj");
+	modelPilarH.setShader(&shaderMulLighting);
+	modelPilarH2.loadModel("../models/Modelos Videojuego/PilarHielo.obj");
+	modelPilarH2.setShader(&shaderMulLighting);
+	modelPilarH3.loadModel("../models/Modelos Videojuego/PilarHielo.obj");
+	modelPilarH3.setShader(&shaderMulLighting);
+	modelPilarH4.loadModel("../models/Modelos Videojuego/PilarHielo.obj");
+	modelPilarH4.setShader(&shaderMulLighting);
+	modelPilarH5.loadModel("../models/Modelos Videojuego/PilarHielo.obj");
+	modelPilarH5.setShader(&shaderMulLighting);
+	modelPilarH6.loadModel("../models/Modelos Videojuego/PilarHielo.obj");
+	modelPilarH6.setShader(&shaderMulLighting);
+	modelPilarH7.loadModel("../models/Modelos Videojuego/PilarHielo.obj");
+	modelPilarH7.setShader(&shaderMulLighting);
+	modelPilarH8.loadModel("../models/Modelos Videojuego/PilarHielo.obj");
+	modelPilarH8.setShader(&shaderMulLighting);
+	modelPilarH9.loadModel("../models/Modelos Videojuego/PilarHielo.obj");
+	modelPilarH9.setShader(&shaderMulLighting);
+	modelPilarH10.loadModel("../models/Modelos Videojuego/PilarHielo.obj");
+	modelPilarH10.setShader(&shaderMulLighting);
+	
+
+	modelPicoR.loadModel("../models/Modelos Videojuego/PicoRock.obj");
+	modelPicoR.setShader(&shaderMulLighting);
+	modelPicoR2.loadModel("../models/Modelos Videojuego/PicoRock.obj");
+	modelPicoR2.setShader(&shaderMulLighting);
+	modelPicoR3.loadModel("../models/Modelos Videojuego/PicoRock.obj");
+	modelPicoR3.setShader(&shaderMulLighting);
+	modelPicoR4.loadModel("../models/Modelos Videojuego/PicoRock.obj");
+	modelPicoR4.setShader(&shaderMulLighting);
+	modelPicoR5.loadModel("../models/Modelos Videojuego/PicoRock.obj");
+	modelPicoR5.setShader(&shaderMulLighting);
+	modelPicoR6.loadModel("../models/Modelos Videojuego/PicoRock.obj");
+	modelPicoR6.setShader(&shaderMulLighting);
+	modelPicoR7.loadModel("../models/Modelos Videojuego/PicoRock.obj");
+	modelPicoR7.setShader(&shaderMulLighting);
+	modelPicoR8.loadModel("../models/Modelos Videojuego/PicoRock.obj");
+	modelPicoR8.setShader(&shaderMulLighting);
+	modelPicoR9.loadModel("../models/Modelos Videojuego/PicoRock.obj");
+	modelPicoR9.setShader(&shaderMulLighting);
+	modelPicoR10.loadModel("../models/Modelos Videojuego/PicoRock.obj");
+	modelPicoR10.setShader(&shaderMulLighting);
+	
+
+	modelCactus.loadModel("../models/Modelos Videojuego/Cactus.obj");
+	modelCactus.setShader(&shaderMulLighting);
+	modelCactus2.loadModel("../models/Modelos Videojuego/Cactus.obj");
+	modelCactus2.setShader(&shaderMulLighting);
+	modelCactus3.loadModel("../models/Modelos Videojuego/Cactus.obj");
+	modelCactus3.setShader(&shaderMulLighting);
+	modelCactus4.loadModel("../models/Modelos Videojuego/Cactus.obj");
+	modelCactus4.setShader(&shaderMulLighting);
+	modelCactus5.loadModel("../models/Modelos Videojuego/Cactus.obj");
+	modelCactus5.setShader(&shaderMulLighting);
+	modelCactus6.loadModel("../models/Modelos Videojuego/Cactus.obj");
+	modelCactus6.setShader(&shaderMulLighting);
+	modelCactus7.loadModel("../models/Modelos Videojuego/Cactus.obj");
+	modelCactus7.setShader(&shaderMulLighting);
+	modelCactus8.loadModel("../models/Modelos Videojuego/Cactus.obj");
+	modelCactus8.setShader(&shaderMulLighting);
+	modelCactus9.loadModel("../models/Modelos Videojuego/Cactus.obj");
+	modelCactus9.setShader(&shaderMulLighting);
+	modelCactus10.loadModel("../models/Modelos Videojuego/Cactus.obj");
+	modelCactus10.setShader(&shaderMulLighting);
+
 
 	//Lamps models
 	modelLamp1.loadModel("../models/Street-Lamp-Black/objLamp.obj");
@@ -1035,6 +1083,51 @@ void destroy() {
 
 	modelTuboM.destroy();
 	modelTuboM2.destroy();
+	modelTuboM3.destroy();
+	modelTuboM4.destroy();
+	modelTuboM5.destroy();
+	modelTuboM6.destroy();
+	modelTuboM7.destroy();
+	modelTuboM8.destroy();
+	modelTuboM9.destroy();
+	modelTuboM10.destroy();
+
+
+	modelPilarH.destroy();
+	modelPilarH2.destroy();
+	modelPilarH3.destroy();
+	modelPilarH4.destroy();
+	modelPilarH5.destroy();
+	modelPilarH6.destroy();
+	modelPilarH7.destroy();
+	modelPilarH8.destroy();
+	modelPilarH9.destroy();
+	modelPilarH10.destroy();
+	
+
+	modelPicoR.destroy();
+	modelPicoR2.destroy();
+	modelPicoR3.destroy();
+	modelPicoR4.destroy();
+	modelPicoR5.destroy();
+	modelPicoR6.destroy();
+	modelPicoR7.destroy();
+	modelPicoR8.destroy();
+	modelPicoR9.destroy();
+	modelPicoR10.destroy();
+	
+
+	modelCactus.destroy();
+	modelCactus2.destroy();
+	modelCactus3.destroy();
+	modelCactus4.destroy();
+	modelCactus5.destroy();
+	modelCactus6.destroy();
+	modelCactus7.destroy();
+	modelCactus8.destroy();
+	modelCactus9.destroy();
+	modelCactus10.destroy();
+	
 
 	// Custom objects Delete
 	modelLamp1.destroy();
@@ -1264,9 +1357,76 @@ void applicationLoop() {
 	int maxAdvance = 0.0;
 
 	modelMatrixTuboM = glm::translate(modelMatrixTuboM, glm::vec3(0.0, 0.0, 80.0));
-
-	modelMatrixTuboM2 = glm::translate(modelMatrixTuboM2, glm::vec3(0.0, 15.0, 80.0));
+	modelMatrixTuboM2 = glm::translate(modelMatrixTuboM2, glm::vec3(0.0, 20.0, 80.0));
 	modelMatrixTuboM2 = glm::rotate(modelMatrixTuboM2, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixTuboM3 = glm::translate(modelMatrixTuboM3, glm::vec3(0.0, 0.0, 60.0));
+	modelMatrixTuboM4 = glm::translate(modelMatrixTuboM4, glm::vec3(0.0, 20.0, 60.0));
+	modelMatrixTuboM4 = glm::rotate(modelMatrixTuboM4, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixTuboM5 = glm::translate(modelMatrixTuboM5, glm::vec3(0.0, 0.0, 40.0));
+	modelMatrixTuboM6 = glm::translate(modelMatrixTuboM6, glm::vec3(0.0, 20.0, 40.0));
+	modelMatrixTuboM6 = glm::rotate(modelMatrixTuboM6, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixTuboM7 = glm::translate(modelMatrixTuboM7, glm::vec3(0.0, 0.0, 20.0));
+	modelMatrixTuboM8 = glm::translate(modelMatrixTuboM8, glm::vec3(0.0, 20.0, 20.0));
+	modelMatrixTuboM8 = glm::rotate(modelMatrixTuboM8, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixTuboM9 = glm::translate(modelMatrixTuboM9, glm::vec3(0.0, 0.0, 0.0));
+	modelMatrixTuboM10 = glm::translate(modelMatrixTuboM10, glm::vec3(0.0, 20.0, 0.0));
+	modelMatrixTuboM10 = glm::rotate(modelMatrixTuboM10, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	
+	modelMatrixPilarH = glm::translate(modelMatrixPilarH, glm::vec3(0.0, 0.0, -20.0));
+	modelMatrixPilarH2 = glm::translate(modelMatrixPilarH2, glm::vec3(0.0, 20.0, -20.0));
+	modelMatrixPilarH2 = glm::rotate(modelMatrixPilarH2, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixPilarH3 = glm::translate(modelMatrixPilarH3, glm::vec3(0.0, 0.0, -40.0));
+	modelMatrixPilarH4 = glm::translate(modelMatrixPilarH4, glm::vec3(0.0, 20.0, -40.0));
+	modelMatrixPilarH4 = glm::rotate(modelMatrixPilarH4, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixPilarH5 = glm::translate(modelMatrixPilarH5, glm::vec3(0.0, 0.0, -60.0));
+	modelMatrixPilarH6 = glm::translate(modelMatrixPilarH6, glm::vec3(0.0, 20.0, -60.0));
+	modelMatrixPilarH6 = glm::rotate(modelMatrixPilarH6, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixPilarH7 = glm::translate(modelMatrixPilarH7, glm::vec3(0.0, 0.0, -80.0));
+	modelMatrixPilarH8 = glm::translate(modelMatrixPilarH8, glm::vec3(0.0, 20.0, -80.0));
+	modelMatrixPilarH8 = glm::rotate(modelMatrixPilarH8, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixPilarH9 = glm::translate(modelMatrixPilarH9, glm::vec3(0.0, 0.0, -100.0));
+	modelMatrixPilarH10 = glm::translate(modelMatrixPilarH10, glm::vec3(0.0, 20.0, -100.0));
+	modelMatrixPilarH10 = glm::rotate(modelMatrixPilarH10, glm::radians(180.0f), glm::vec3(0, 0, 1));
+
+	modelMatrixPicoR = glm::translate(modelMatrixPicoR, glm::vec3(0.0, 0.0, -120.0));
+	modelMatrixPicoR2 = glm::translate(modelMatrixPicoR2, glm::vec3(0.0, 20.0, -120.0));
+	modelMatrixPicoR2 = glm::rotate(modelMatrixPicoR2, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixPicoR3 = glm::translate(modelMatrixPicoR3, glm::vec3(0.0, 0.0, -140.0));
+	modelMatrixPicoR4 = glm::translate(modelMatrixPicoR4, glm::vec3(0.0, 20.0, -140.0));
+	modelMatrixPicoR4 = glm::rotate(modelMatrixPicoR4, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixPicoR5 = glm::translate(modelMatrixPicoR5, glm::vec3(0.0, 0.0, -160.0));
+	modelMatrixPicoR6 = glm::translate(modelMatrixPicoR6, glm::vec3(0.0, 20.0, -160.0));
+	modelMatrixPicoR6 = glm::rotate(modelMatrixPicoR6, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixPicoR7 = glm::translate(modelMatrixPicoR7, glm::vec3(0.0, 0.0, -180.0));
+	modelMatrixPicoR8 = glm::translate(modelMatrixPicoR8, glm::vec3(0.0, 20.0, -180.0));
+	modelMatrixPicoR8 = glm::rotate(modelMatrixPicoR8, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixPicoR9 = glm::translate(modelMatrixPicoR9, glm::vec3(0.0, 0.0, -200.0));
+	modelMatrixPicoR10 = glm::translate(modelMatrixPicoR10, glm::vec3(0.0, 20.0, -200.0));
+	modelMatrixPicoR10 = glm::rotate(modelMatrixPicoR10, glm::radians(180.0f), glm::vec3(0, 0, 1));
+
+	modelMatrixCactus = glm::translate(modelMatrixCactus, glm::vec3(0.0, 0.0, -220.0));
+	modelMatrixCactus2 = glm::translate(modelMatrixCactus2, glm::vec3(0.0, 20.0, -220.0));
+	modelMatrixCactus2 = glm::rotate(modelMatrixCactus2, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixCactus2 = glm::rotate(modelMatrixCactus2, glm::radians(90.0f), glm::vec3(0, 1, 0));
+	modelMatrixCactus3 = glm::translate(modelMatrixCactus3, glm::vec3(0.0, 0.0, -240.0));
+	modelMatrixCactus3 = glm::rotate(modelMatrixCactus3, glm::radians(90.0f), glm::vec3(0, 1, 0));
+	modelMatrixCactus4 = glm::translate(modelMatrixCactus4, glm::vec3(0.0, 20.0, -240.0));
+	modelMatrixCactus4 = glm::rotate(modelMatrixCactus4, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixCactus4 = glm::rotate(modelMatrixCactus4, glm::radians(45.0f), glm::vec3(0, 1, 0));
+	modelMatrixCactus5 = glm::translate(modelMatrixCactus5, glm::vec3(0.0, 0.0, -260.0));
+	modelMatrixCactus5 = glm::rotate(modelMatrixCactus5, glm::radians(-45.0f), glm::vec3(0, 1, 0));
+	modelMatrixCactus6 = glm::translate(modelMatrixCactus6, glm::vec3(0.0, 20.0, -260.0));
+	modelMatrixCactus6 = glm::rotate(modelMatrixCactus6, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixCactus7 = glm::translate(modelMatrixCactus7, glm::vec3(0.0, 0.0, -280.0));
+	modelMatrixCactus7 = glm::rotate(modelMatrixCactus7, glm::radians(90.0f), glm::vec3(0, 1, 0));
+	modelMatrixCactus8 = glm::translate(modelMatrixCactus8, glm::vec3(0.0, 20.0, -280.0));
+	modelMatrixCactus8 = glm::rotate(modelMatrixCactus8, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixCactus8 = glm::rotate(modelMatrixCactus8, glm::radians(90.0f), glm::vec3(0, 1, 0));
+	modelMatrixCactus9 = glm::translate(modelMatrixCactus9, glm::vec3(0.0, 0.0, -300.0));
+	modelMatrixCactus9 = glm::rotate(modelMatrixCactus9, glm::radians(135.0f), glm::vec3(0, 1, 0));
+	modelMatrixCactus10 = glm::translate(modelMatrixCactus10, glm::vec3(0.0, 20.0, -300.0));
+	modelMatrixCactus10 = glm::rotate(modelMatrixCactus10, glm::radians(180.0f), glm::vec3(0, 0, 1));
+	modelMatrixCactus10 = glm::rotate(modelMatrixCactus10, glm::radians(90.0f), glm::vec3(0, 1, 0));
 
 	modelMatrixMayow = glm::translate(modelMatrixMayow, glm::vec3(0.0f, 0.05f, 100.0f));
 
@@ -1481,93 +1641,252 @@ void applicationLoop() {
         glBindTexture(GL_TEXTURE_2D, texturePraderaID);
         shaderMulLighting.setInt("texture1", 0);
         //Pared1
-		Pared1.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared1.setPosition(glm::vec3(-10.0f, 7.5f, 75.0f));
+		Pared1.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared1.setPosition(glm::vec3(-20.0f, 10.0f, 75.0f));
 		Pared1.render();
 		//Pared2
-		Pared2.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared2.setPosition(glm::vec3(-10.0f, 7.5f, 25.0f));
+		Pared2.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared2.setPosition(glm::vec3(-20.0f, 10.0f, 25.0f));
 		Pared2.render();
 		//Pared3
-		Pared3.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared3.setPosition(glm::vec3(10.0f, 7.5f, 75.0f));
+		Pared3.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared3.setPosition(glm::vec3(20.0f, 10.0f, 75.0f));
 		Pared3.render();
 		//Pared4
-		Pared4.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared4.setPosition(glm::vec3(10.0f, 7.5f, 25.0f));
+		Pared4.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared4.setPosition(glm::vec3(20.0f, 10.0f, 25.0f));
 		Pared4.render();
 
 		glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureMontañasHeladasID);
         shaderMulLighting.setInt("texture1", 0);
 		//Pared5
-		Pared5.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared5.setPosition(glm::vec3(-10.0f, 7.5f, -25.0f));
+		Pared5.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared5.setPosition(glm::vec3(-20.0f, 10.0f, -25.0f));
 		Pared5.render();
 		//Pared6
-		Pared6.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared6.setPosition(glm::vec3(-10.0f, 7.5f, -75.0f));
+		Pared6.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared6.setPosition(glm::vec3(-20.0f, 10.0f, -75.0f));
 		Pared6.render();
 		//Pared7
-		Pared7.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared7.setPosition(glm::vec3(10.0f, 7.5f, -25.0f));
+		Pared7.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared7.setPosition(glm::vec3(20.0f, 10.0f, -25.0f));
 		Pared7.render();
 		//Pared8
-		Pared8.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared8.setPosition(glm::vec3(10.0f, 7.5f, -75.0f));
+		Pared8.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared8.setPosition(glm::vec3(20.0f, 10.0f, -75.0f));
 		Pared8.render();
 
 		glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureMontañaRocosaID);
         shaderMulLighting.setInt("texture1", 0);
 		//Pared9
-		Pared9.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared9.setPosition(glm::vec3(-10.0f, 7.5f, -125.0f));
+		Pared9.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared9.setPosition(glm::vec3(-20.0f, 10.0f, -125.0f));
 		Pared9
 		.render();
 		//Pared10
-		Pared10.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared10.setPosition(glm::vec3(-10.0f, 7.5f, -175.0f));
+		Pared10.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared10.setPosition(glm::vec3(-20.0f, 10.0f, -175.0f));
 		Pared10.render();
 		//Pared11
-		Pared11.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared11.setPosition(glm::vec3(10.0f, 7.5f, -125.0f));
+		Pared11.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared11.setPosition(glm::vec3(20.0f, 10.0f, -125.0f));
 		Pared11.render();
 		//Pared12
-		Pared12.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared12.setPosition(glm::vec3(10.0f, 7.5f, -175.0f));
+		Pared12.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared12.setPosition(glm::vec3(20.0f, 10.0f, -175.0f));
 		Pared12.render();
 
 		glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureDesiertoID);
         shaderMulLighting.setInt("texture1", 0);
 		//Pared13
-		Pared13.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared13.setPosition(glm::vec3(-10.0f, 7.5f, -225.0f));
+		Pared13.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared13.setPosition(glm::vec3(-20.0f, 10.0f, -225.0f));
 		Pared13.render();
 		//Pared14
-		Pared14.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared14.setPosition(glm::vec3(-10.0f, 7.5f, -275.0f));
+		Pared14.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared14.setPosition(glm::vec3(-20.0f, 10.0f, -275.0f));
 		Pared14.render();
 		//Pared15
-		Pared15.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared15.setPosition(glm::vec3(10.0f, 7.5f, -225.0f));
+		Pared15.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared15.setPosition(glm::vec3(20.0f, 10.0f, -225.0f));
 		Pared15.render();
 		//Pared16
-		Pared16.setScale(glm::vec3(0.2, 15.0, 50.0));
-		Pared16.setPosition(glm::vec3(10.0f, 7.5f, -275.0f));
+		Pared16.setScale(glm::vec3(0.2, 20.0, 50.0));
+		Pared16.setPosition(glm::vec3(20.0f, 10.0f, -275.0f));
 		Pared16.render();
 		
-		//------------------Obstaculos-------------------------------
+		//------------------Obstaculos------Tubos------------------------------
 		//Tubo1
-		modelTuboM.setScale(glm::vec3(0.55f, 0.45f, 0.55f));
+		modelTuboM.setScale(glm::vec3(0.7f, 0.45f, 0.7f));
 		modelTuboM.render(modelMatrixTuboM);
 		glActiveTexture(GL_TEXTURE0);
-		
-		//Tubo2
-		modelTuboM.setScale(glm::vec3(0.55f, 0.40f, 0.55f));
+		//Tubo2 arriba
+		modelTuboM.setScale(glm::vec3(0.7f, 0.60f, 0.7f));
 		modelTuboM.render(modelMatrixTuboM2);
 		glActiveTexture(GL_TEXTURE0);
+		
+		//Tubo3
+		modelTuboM.setScale(glm::vec3(0.7f, 0.65f, 0.7f));
+		modelTuboM.render(modelMatrixTuboM3);
+		glActiveTexture(GL_TEXTURE0);
+		//Tubo4 arriba
+		modelTuboM.setScale(glm::vec3(0.7f, 0.40f, 0.7f));
+		modelTuboM.render(modelMatrixTuboM4);
+		glActiveTexture(GL_TEXTURE0);
+		//Tubo5
+		modelTuboM.setScale(glm::vec3(0.7f, 0.35f, 0.7f));
+		modelTuboM.render(modelMatrixTuboM5);
+		glActiveTexture(GL_TEXTURE0);
+		//Tubo6 arriba
+		modelTuboM.setScale(glm::vec3(0.7f, 0.70f, 0.7f));
+		modelTuboM.render(modelMatrixTuboM6);
+		glActiveTexture(GL_TEXTURE0);
+		//Tubo7
+		modelTuboM.setScale(glm::vec3(0.7f, 0.65f, 0.7f));
+		modelTuboM.render(modelMatrixTuboM7);
+		glActiveTexture(GL_TEXTURE0);
+		//Tubo8 arriba
+		modelTuboM.setScale(glm::vec3(0.7f, 0.35f, 0.7f));
+		modelTuboM.render(modelMatrixTuboM8);
+		glActiveTexture(GL_TEXTURE0);
+		//Tubo9
+		modelTuboM.setScale(glm::vec3(0.7f, 0.45f, 0.7f));
+		modelTuboM.render(modelMatrixTuboM9);
+		glActiveTexture(GL_TEXTURE0);
+		//Tubo10 arriba
+		modelTuboM.setScale(glm::vec3(0.7f, 0.60f, 0.7f));
+		modelTuboM.render(modelMatrixTuboM10);
+		glActiveTexture(GL_TEXTURE0);
+		
+		//------------------Obstaculos------Pilares de hielo------------------------------
+		//Pilar 1
+		modelPilarH.setScale(glm::vec3(0.7f, 1.0f, 0.7f));
+		modelPilarH.render(modelMatrixPilarH);
+		glActiveTexture(GL_TEXTURE0);
+		//Pilar 2 arriba
+		modelPilarH2.setScale(glm::vec3(0.7f, 1.5f, 0.7f));
+		modelPilarH2.render(modelMatrixPilarH2);
+		glActiveTexture(GL_TEXTURE0);
+		//Pilar 3
+		modelPilarH3.setScale(glm::vec3(0.7f, 2.0f, 0.7f));
+		modelPilarH3.render(modelMatrixPilarH3);
+		glActiveTexture(GL_TEXTURE0);
+		//Pilar 4 arriba
+		modelPilarH4.setScale(glm::vec3(0.7f, 0.5f, 0.7f));
+		modelPilarH4.render(modelMatrixPilarH4);
+		glActiveTexture(GL_TEXTURE0);
+		//Pilar 5
+		modelPilarH5.setScale(glm::vec3(0.7f, 0.5f, 0.7f));
+		modelPilarH5.render(modelMatrixPilarH5);
+		glActiveTexture(GL_TEXTURE0);
+		//Pilar 6 arriba
+		modelPilarH6.setScale(glm::vec3(0.7f, 2.0f, 0.7f));
+		modelPilarH6.render(modelMatrixPilarH6);
+		glActiveTexture(GL_TEXTURE0);
+		//Pilar 7
+		modelPilarH7.setScale(glm::vec3(0.7f, 1.5f, 0.7f));
+		modelPilarH7.render(modelMatrixPilarH7);
+		glActiveTexture(GL_TEXTURE0);
+		//Pilar 8 arriba
+		modelPilarH8.setScale(glm::vec3(0.7f, 1.0f, 0.7f));
+		modelPilarH8.render(modelMatrixPilarH8);
+		glActiveTexture(GL_TEXTURE0);
+		//Pilar9 
+		modelPilarH9.setScale(glm::vec3(0.7f, 0.5f, 0.7f));
+		modelPilarH9.render(modelMatrixPilarH9);
+		glActiveTexture(GL_TEXTURE0);
+		//Pilar 10 arriba
+		modelPilarH10.setScale(glm::vec3(0.7f, 2.0f, 0.7f));
+		modelPilarH10.render(modelMatrixPilarH10);
+		glActiveTexture(GL_TEXTURE0);
+
+		//------------------Obstaculos------Picos de Roca------------------------------
+		//Pico 1
+		modelPicoR.setScale(glm::vec3(0.7f, 0.6f, 0.7f));
+		modelPicoR.render(modelMatrixPicoR);
+		glActiveTexture(GL_TEXTURE0);
+		//Pico 2 arriba
+		modelPicoR2.setScale(glm::vec3(0.7f, 1.0f, 0.7f));
+		modelPicoR2.render(modelMatrixPicoR2);
+		glActiveTexture(GL_TEXTURE0);
+		//Pico 3 
+		modelPicoR3.setScale(glm::vec3(0.7f, 1.0f, 0.5f));
+		modelPicoR3.render(modelMatrixPicoR3);
+		glActiveTexture(GL_TEXTURE0);
+		//Pico 4 arriba
+		modelPicoR4.setScale(glm::vec3(0.7f, 0.6f, 0.7f));
+		modelPicoR4.render(modelMatrixPicoR4);
+		glActiveTexture(GL_TEXTURE0);
+		//Pico 5
+		modelPicoR5.setScale(glm::vec3(0.7f, 0.2f, 0.7f));
+		modelPicoR5.render(modelMatrixPicoR5);
+		glActiveTexture(GL_TEXTURE0);
+		//Pico 6 arriba
+		modelPicoR6.setScale(glm::vec3(0.7f, 1.4f, 0.7f));
+		modelPicoR6.render(modelMatrixPicoR6);
+		glActiveTexture(GL_TEXTURE0);
+		//Pico 7
+		modelPicoR7.setScale(glm::vec3(0.7f, 1.5f, 0.7f));
+		modelPicoR7.render(modelMatrixPicoR7);
+		glActiveTexture(GL_TEXTURE0);
+		//Pico 8 arriba
+		modelPicoR8.setScale(glm::vec3(0.7f, 0.1f, 0.7f));
+		modelPicoR8.render(modelMatrixPicoR8);
+		glActiveTexture(GL_TEXTURE0);
+		//Pico 9
+		modelPicoR9.setScale(glm::vec3(0.7f, 0.7f, 0.7f));
+		modelPicoR9.render(modelMatrixPicoR9);
+		glActiveTexture(GL_TEXTURE0);
+		//Pico 10 arriba
+		modelPicoR10.setScale(glm::vec3(0.7f, 1.1f, 0.7f));
+		modelPicoR10.render(modelMatrixPicoR10);
+		glActiveTexture(GL_TEXTURE0);
+
+		//------------------Obstaculos------Cactus------------------------------
+		//Cactus 1
+		modelCactus.setScale(glm::vec3(1.2f, 1.5, 1.2f));
+		modelCactus.render(modelMatrixCactus);
+		glActiveTexture(GL_TEXTURE0);
+		//Cactus 2 arriba
+		modelCactus2.setScale(glm::vec3(1.2f, 1.1f, 1.2f));
+		modelCactus2.render(modelMatrixCactus2);
+		glActiveTexture(GL_TEXTURE0);
+		//Cactus 3 
+		modelCactus3.setScale(glm::vec3(1.2f, 2.0f, 1.2f));
+		modelCactus3.render(modelMatrixCactus3);
+		glActiveTexture(GL_TEXTURE0);
+		//Cactus 4 arriba
+		modelCactus4.setScale(glm::vec3(1.2f, 0.6f, 1.2f));
+		modelCactus4.render(modelMatrixCactus4);
+		glActiveTexture(GL_TEXTURE0);
+		//Cactus 5
+		modelCactus5.setScale(glm::vec3(1.2f, 0.6f, 1.2f));
+		modelCactus5.render(modelMatrixCactus5);
+		glActiveTexture(GL_TEXTURE0);
+		//Cactus 6 arriba
+		modelCactus6.setScale(glm::vec3(1.2f, 2.0f, 1.2f));
+		modelCactus6.render(modelMatrixCactus6);
+		glActiveTexture(GL_TEXTURE0);
+		//Cactus 7
+		modelCactus7.setScale(glm::vec3(1.2f, 1.5f, 1.2f));
+		modelCactus7.render(modelMatrixCactus7);
+		glActiveTexture(GL_TEXTURE0);
+		//Cactus 8 arriba
+		modelCactus8.setScale(glm::vec3(1.2f, 1.0f, 1.2f));
+		modelCactus8.render(modelMatrixCactus8);
+		glActiveTexture(GL_TEXTURE0);
+		//Cactus 9
+		modelCactus9.setScale(glm::vec3(1.2f, 1.5f, 1.2f));
+		modelCactus9.render(modelMatrixCactus9);
+		glActiveTexture(GL_TEXTURE0);
+		//Cactus 10 arriba
+		modelCactus10.setScale(glm::vec3(1.2f, 1.2f, 1.2f));
+		modelCactus10.render(modelMatrixCactus10);
+		glActiveTexture(GL_TEXTURE0);
+		
 
 		// Render lamp
 		for(int i = 0; i < lamp1Position.size(); i++){
