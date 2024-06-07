@@ -1119,8 +1119,7 @@ void applicationLoop() {
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f),
 				(float) screenWidth / (float) screenHeight, 0.01f, 100.0f);
 		glm::mat4 view = camera->getViewMatrix();
-		//--------------------------------------
-		if(modelSelected == 1){
+		if(modelSelected == 0){
 			axis = glm::axis(glm::quat_cast(modelMatrixMayow));
 			angleTarget = glm::angle(glm::quat_cast(modelMatrixMayow));
 			target = modelMatrixMayow[3];
