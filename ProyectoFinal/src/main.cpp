@@ -122,7 +122,7 @@ Model modelLampPost2;
 Model birdModelAnimate;
 
 // Terrain model instance
-Terrain terrain(-1, -1, 400, 7, "../Textures/HeightmapProyecto_.png");
+Terrain terrain(-1, -1, 400, 8, "../Textures/HeightmapProyecto_.png");
 
 GLuint textureCespedID, textureWallID, texturePraderaID, textureMontañasHeladasID, textureMontañaRocosaID, textureDesiertoID, textureHieloID, textureArenaID, textureTransparenciaID;
 GLuint textureTerrainRID, textureTerrainGID, textureTerrainBID, textureTerrainBlendMapID;
@@ -239,6 +239,29 @@ std::set<std::string> colisionesActuales;
 //Colliders.
 std::map<std::string, std::tuple<AbstractModel::OBB, glm::mat4, glm::mat4> > collidersOBB;
 std::map<std::string, std::tuple<AbstractModel::SBB, glm::mat4, glm::mat4> > collidersSBB;
+
+//Sound.
+#define NUM_BUFFERS 3
+#define NUM_SOURCES 3
+#define NUM_ENVIRONMENTS 1
+//Listener.
+ALfloat listenerPos[] = {0.0, 0.0, 4.0};
+ALfloat listenerVel[] = { 0.0, 0.0, 0.0 };
+ALfloat listenerOri[] = { 0.0, 0.0, 1.0, 0.0, 1.0, 0.0 };
+//Source 0.
+ALfloat source0Pos[] = { -2.0, 0.0, 0.0 };
+ALfloat source0Vel[] = { 0.0, 0.0, 0.0 };
+//Buffers.
+ALuint buffer[NUM_BUFFERS];
+ALuint source[NUM_SOURCES];
+ALuint environment[NUM_ENVIRONMENTS];
+//Configs.
+ALsizei size, freq;
+ALenum format;
+ALvoid *data;
+int ch;
+ALboolean loop;
+std::vector<bool> sourcesPlay = {true};
 
 // Se definen todos las funciones.
 void reshapeCallback(GLFWwindow *Window, int widthRes, int heightRes);
@@ -839,6 +862,44 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
         std::cout << "Fallo la carga de textura" << std::endl;
     }
     textureTransparencia.freeImage();
+	
+   //Sound.
+	//OpenAL init.
+	alutInit(0, nullptr);
+	alListenerfv(AL_POSITION, listenerPos);
+	alListenerfv(AL_VELOCITY, listenerVel);
+	alListenerfv(AL_ORIENTATION, listenerOri);
+	alGetError();
+	if (alGetError() != AL_NO_ERROR) {
+		printf("- Error creating buffers !!\n");
+		exit(1);
+	}
+	else {
+		printf("init() - No errors yet.");
+	}
+	alGenBuffers(NUM_BUFFERS, buffer);
+	buffer[0] = alutCreateBufferFromFile("../sounds/SongProyecto_2.wav");
+	int errorAlut = alutGetError();
+	if (errorAlut != ALUT_ERROR_NO_ERROR){
+		printf("- Error open files with alut %d !!\n", errorAlut);
+		exit(2);
+	}
+	alGetError();
+	alGenSources(NUM_SOURCES, source);
+	if (alGetError() != AL_NO_ERROR) {
+		printf("- Error creating sources !!\n");
+		exit(2);
+	}
+	else {
+		printf("init - no errors after alGenSources\n");
+	}
+	alSourcef(source[0], AL_PITCH, 1.0f);
+	alSourcef(source[0], AL_GAIN, 3.0f);
+	alSourcefv(source[0], AL_POSITION, source0Pos);
+	alSourcefv(source[0], AL_VELOCITY, source0Vel);
+	alSourcei(source[0], AL_BUFFER, buffer[0]);
+	alSourcei(source[0], AL_LOOPING, AL_TRUE);
+	alSourcef(source[0], AL_MAX_DISTANCE, 2000);
 }
 
 void destroy() {
@@ -2224,11 +2285,34 @@ void applicationLoop() {
 		glDisable(GL_BLEND);
 
 		glfwSwapBuffers(window);
+
+		//Sound.
+		//Listener for the third person camera.
+		listenerPos[0] = modelMatrixBird[3].x;
+		listenerPos[1] = modelMatrixBird[3].y;
+		listenerPos[2] = modelMatrixBird[3].z;
+		alListenerfv(AL_POSITION, listenerPos);
+		glm::vec3 upModel = glm::normalize(modelMatrixBird[1]);
+  		glm::vec3 frontModel = glm::normalize(modelMatrixBird[2]);
+		listenerOri[0] = frontModel.x;
+		listenerOri[1] = frontModel.y;
+		listenerOri[2] = frontModel.z;
+		listenerOri[3] = upModel.x;
+		listenerOri[4] = upModel.y;
+		listenerOri[5] = upModel.z;
+		alListenerfv(AL_ORIENTATION, listenerOri);
+		for(unsigned int i = 0; i < sourcesPlay.size(); i++){
+			if(sourcesPlay[i]){
+				sourcesPlay[i] = false;
+				alSourcePlay(source[i]);
+			}
+		}
+		
 	}
 }
 
 int main(int argc, char **argv) {
-	init(800, 700, "Window GLFW", false);
+	init(1024, 768, "Proyecto final: Sky Hopper.", false);
 	applicationLoop();
 	destroy();
 	return 1;
