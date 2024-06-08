@@ -2196,7 +2196,7 @@ void applicationLoop() {
 		glEnable(GL_BLEND);
 		boxIntro.render();
 		glDisable(GL_BLEND);
-		modelText->render("Texto en OpenGL", -1, 0);
+		//modelText->render("Texto en OpenGL", -1, 0);
 
 		// Prueba de colisiones.
 		for (auto it = collidersOBB.begin(); it != collidersOBB.end(); it++) {
