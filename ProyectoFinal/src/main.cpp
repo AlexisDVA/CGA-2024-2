@@ -226,25 +226,13 @@ std::map<std::string, glm::vec3> blendingUnsorted = {
 double deltaTime;
 double currTime, lastTime;
 
-//Fly.
-bool Fly_ = false;
-float FlyG_ = 4.90;
-double T_ = 0;
-double Start_ = 0;
-
-// Jump variables
-bool isJump = false;
-float GRAVITY = 1.81;
-double tmv = 0;
-double startTimeJump = 0;
-
-//Animacion de Bird
-float birdSpeed = 0.35f; // Velocidad inicial del bird
+//Animacion de Bird.
+float birdSpeed = 0.35f;//Velocidad inicial del bird.
 bool isSpacePressed = false;
 float birdGravity = 0.25f;
 float birdJumpSpeed = 0.25f;
 
-//// Contador de colisiones
+//Contador de colisiones.
 int colisiones = 0;
 std::set<std::string> colisionesActuales;
 
@@ -1044,14 +1032,7 @@ bool processInput(bool continueApplication) {
 
 	offsetX = 0;
 	offsetY = 0;
-
-	//Controles de bird.
-	bool StatFly_ = glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS;
-	if(!Fly_ && StatFly_){
-		Fly_ = true;
-		Start_ = currTime;
-		T_ = 0;
-	}
+	
 	glfwPollEvents();
 	return continueApplication;
 }
@@ -1223,11 +1204,6 @@ void applicationLoop() {
 				glm::value_ptr(projection));
 		shaderTerrain.setMatrix4("view", 1, false,
 				glm::value_ptr(view));
-
-		//Neblina.
-		shaderMulLighting.setVectorFloat3("fogColor", glm::value_ptr(glm::vec3(0.5, 0.5, 0.4)));
-		shaderTerrain.setVectorFloat3("fogColor", glm::value_ptr(glm::vec3(0.5, 0.5, 0.4)));
-		shaderSkybox.setVectorFloat3("fogColor", glm::value_ptr(glm::vec3(0.5, 0.5, 0.4)));
 
 		//Propiedades Luz direccional.
 		shaderMulLighting.setVectorFloat3("viewPos", glm::value_ptr(camera->getPosition()));
@@ -1612,14 +1588,12 @@ void applicationLoop() {
 		modelCactus10.render(modelMatrixCactus10);
 		glActiveTexture(GL_TEXTURE0);
 		
-		
 		//Objetos animados por huesos.
 		glm::mat4 modelMatrixBirdBody = glm::mat4(modelMatrixBird);
 		modelMatrixBirdBody = glm::scale(modelMatrixBirdBody, glm::vec3(0.03f));
 		birdModelAnimate.setAnimationIndex(animationBirdIndex);
 		birdModelAnimate.render(modelMatrixBirdBody);
 		animationBirdIndex = 0;
-
 
 		//Skybox.
 		GLint oldCullFaceMode;
