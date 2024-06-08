@@ -116,8 +116,8 @@ Model modelCactus10;
 Model modelLamp1;
 Model modelLamp2;
 Model modelLampPost2;
-//Modelos animados.
 
+//Modelos animados.
 //Bird
 Model birdModelAnimate;
 
