@@ -229,8 +229,8 @@ double currTime, lastTime;
 //Animacion de Bird.
 float birdSpeed = 0.35f;//Velocidad inicial del bird.
 bool isSpacePressed = false;
-float birdGravity = 0.25f;
-float birdJumpSpeed = 0.25f;
+float birdGravity = 0.30f;
+float birdJumpSpeed = 0.30f;
 
 //Contador de colisiones.
 int colisiones = 0;
@@ -1179,8 +1179,8 @@ void applicationLoop() {
 			angleTarget = 0.0;
 		if(axis.y < 0)
 			angleTarget = -angleTarget;
-		if(modelSelected == 1)
-			angleTarget -= glm::radians(90.0f);
+		if(modelSelected == 0)
+			angleTarget -= glm::radians(15.0f);//90.0f
 		camera->setCameraTarget(target);
 		camera->setAngleTarget(angleTarget);
 		camera->updateCamera();
@@ -1590,7 +1590,7 @@ void applicationLoop() {
 		
 		//Objetos animados por huesos.
 		glm::mat4 modelMatrixBirdBody = glm::mat4(modelMatrixBird);
-		modelMatrixBirdBody = glm::scale(modelMatrixBirdBody, glm::vec3(0.03f));
+		modelMatrixBirdBody = glm::scale(modelMatrixBirdBody, glm::vec3(0.02f));
 		birdModelAnimate.setAnimationIndex(animationBirdIndex);
 		birdModelAnimate.render(modelMatrixBirdBody);
 		animationBirdIndex = 0;
