@@ -1,3 +1,9 @@
+/*-----------------------------------------------
+		SKY HOPPER
+		Computación Gráfica Avanzada
+		Cruz Romero Juan Andrés
+		Del Valle Aragón Alexis Rafael
+------------------------------------------------*/
 #define _USE_MATH_DEFINES
 #include <set>
 #include <cmath>
